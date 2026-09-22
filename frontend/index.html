@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentinel — Smart Code Inspection Platform with Vulnerability Detection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* Specific landing page hero & bento styles */
+    .landing-body {
+      background-color: var(--bg-canvas);
+      color: var(--fg-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: var(--font-sans);
+    }
+    .landing-nav {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .landing-logo {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--fg-main);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .landing-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .landing-nav-link {
+      font-size: 14px;
+      color: var(--fg-subtle);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+    .landing-nav-link:hover {
+      color: var(--fg-main);
+    }
+    .btn-pill-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--terracotta);
+      color: #ffffff;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--terracotta);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-pill-primary:hover {
+      background-color: var(--terracotta-deep);
+      border-color: var(--terracotta-deep);
+      transform: translateY(-1px);
+    }
+    .btn-pill-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent;
+      color: var(--fg-main);
+      padding: 10px 22px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--border-strong);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-pill-outline:hover {
+      background-color: var(--bg-surface-2);
+      border-color: var(--fg-muted);
+    }
+    .landing-hero {
+      max-width: 920px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 40px 24px 20px 24px;
+    }
+    .hero-pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      background-color: var(--terracotta-soft);
+      color: var(--terracotta-deep);
+      border: 1px solid rgba(194, 89, 44, 0.2);
+      font-size: 12.5px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(34px, 5vw, 54px);
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+      color: var(--fg-main);
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    .hero-title-accent {
+      color: var(--terracotta);
+      font-style: normal;
+    }
+    .hero-subtitle {
+      font-size: clamp(15px, 1.8vw, 17px);
+      color: var(--fg-subtle);
+      line-height: 1.6;
+      max-width: 640px;
+      margin: 0 auto 12px auto;
+    }
+    .hero-project-tag {
+      font-size: 13px;
+      color: var(--fg-muted);
+      margin-bottom: 28px;
+    }
+    .hero-cta-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+    /* Floating Code Card */
+    .hero-code-card {
+      max-width: 720px;
+      margin: 0 auto 72px auto;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+      text-align: left;
+      position: relative;
+    }
+    .hero-code-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--terracotta), #f2a65a, var(--terracotta));
+    }
+    .code-card-header {
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .window-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background-color: var(--border-strong);
+      display: inline-block;
+    }
+    .code-card-body {
+      padding: 20px 24px;
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: var(--fg-main);
+      overflow-x: auto;
+    }
+    .code-card-body .kw { color: #b84a28; font-weight: 600; }
+    .code-card-body .fn { color: #2c6e49; font-weight: 600; }
+    .code-card-body .str { color: #8c5e2d; }
+    .code-card-body .vuln { background-color: rgba(194, 89, 44, 0.12); padding: 1px 4px; border-radius: 4px; border-bottom: 1px dashed var(--terracotta); }
+
+    /* Bento Grid */
+    .bento-section {
+      max-width: 1080px;
+      margin: 0 auto 64px auto;
+      padding: 0 24px;
+    }
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 18px;
+    }
+    .bento-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+    .bento-card:hover {
+      border-color: var(--terracotta);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03);
+    }
+    .bento-title {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--fg-main);
+      margin-bottom: 8px;
+    }
+    .bento-desc {
+      font-size: 13.5px;
+      color: var(--fg-subtle);
+      line-height: 1.5;
+    }
+    .landing-footer {
+      margin-top: auto;
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 12.5px;
+      color: var(--fg-muted);
+    }
+  </style>
+</head>
+<body class="landing-body">
+
+  <!-- Top Navigation -->
+  <header class="landing-nav">
+    <a href="/" class="landing-logo">Sentinel</a>
+    <div class="landing-nav-actions">
+      <a href="/dashboard.html" class="landing-nav-link">Dashboard</a>
+      <a href="/analysis.html" class="btn-pill-primary">Get started</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main>
+    <section class="landing-hero">
+      <div class="hero-pill-badge">
+        <span>Multi-agent AI system • Online</span>
+      </div>
+
+      <h1 class="hero-title">
+        Smart Code Inspection<br>
+        <span class="hero-title-accent">Platform with Vulnerability Detection</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Sentinel runs a team of AI agents over every commit — reviewing logic, hunting vulnerabilities, and explaining what to fix, in plain language, in seconds.
+      </p>
+
+      <p class="hero-project-tag">
+        Development of Smart Code Inspection Platform with Vulnerability Detection System — Group 2
+      </p>
+
+      <div class="hero-cta-row">
+        <a href="/analysis.html" class="btn-pill-primary" style="padding: 12px 28px; font-size: 15px;">Start free analysis</a>
+        <a href="/dashboard.html" class="btn-pill-outline" style="padding: 12px 28px; font-size: 15px;">See how it works</a>
+      </div>
+
+      <!-- Floating Code Box Demonstration -->
+      <div class="hero-code-card">
+        <div class="code-card-header">
+          <span class="window-dot"></span>
+          <span class="window-dot"></span>
+          <span class="window-dot"></span>
+        </div>
+        <div class="code-card-body">
+<span class="kw">def</span> <span class="fn">transfer</span>(user, amount, to_account):
+    <span class="vuln">query = <span class="str">"UPDATE accounts SET balance = balance - "</span> + amount + <span class="str">" WHERE user = '"</span> + user + <span class="str">"'"</span></span>
+    db.execute(query)
+    log.write(<span class="str">f"{user} sent {amount} to {to_account}"</span>)
+    <span class="kw">return</span> <span class="kw">True</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bento Grid Section -->
+    <section class="bento-section">
+      <div class="bento-grid">
+        <!-- 1 -->
+        <div class="bento-card">
+          <h2 class="bento-title">Bug &amp; logic detection</h2>
+          <p class="bento-desc">Catches edge cases, null-handling gaps, and logic errors before your reviewers have to.</p>
+        </div>
+
+        <!-- 2 -->
+        <div class="bento-card">
+          <h2 class="bento-title">Security analysis</h2>
+          <p class="bento-desc">Flags injection risks, unsafe input handling, and secrets, with a risk rating per issue.</p>
+        </div>
+
+        <!-- 3 -->
+        <div class="bento-card">
+          <h2 class="bento-title">Instant summaries</h2>
+          <p class="bento-desc">Plain-language explanations of what a file does, for faster onboarding and review.</p>
+        </div>
+
+        <!-- 4 -->
+        <div class="bento-card">
+          <h2 class="bento-title">RAG chat assistant</h2>
+          <p class="bento-desc">Ask questions about your codebase and get answers grounded in the files you upload.</p>
+        </div>
+
+        <!-- 5 -->
+        <div class="bento-card">
+          <h2 class="bento-title">Multi-language</h2>
+          <p class="bento-desc">Java, Python, C, C++, JavaScript and TypeScript analyzed with language-aware prompts.</p>
+        </div>
+
+        <!-- 6 -->
+        <div class="bento-card">
+          <h2 class="bento-title">Exportable reports</h2>
+          <p class="bento-desc">Turn any analysis into a shareable report your team can act on.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    Sentinel — Development of Smart Code Inspection Platform with Vulnerability Detection System — Group 2.
+  </footer>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

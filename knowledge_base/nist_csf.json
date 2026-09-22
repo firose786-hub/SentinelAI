@@ -1,0 +1,58 @@
+[
+  {
+    "category_id": "GV.OC",
+    "category": "Organizational Context",
+    "description": "The circumstances — mission, stakeholder expectations, dependencies, and legal, regulatory, and contractual requirements — surrounding the organization's cybersecurity risk management decisions are understood.",
+    "function": "GOVERN",
+    "ai_implications": "AI deployment context and risk tolerance must be formally documented across enterprise stakeholders."
+  },
+  {
+    "category_id": "GV.RM",
+    "category": "Risk Management Strategy",
+    "description": "The organization's priorities, constraints, risk tolerances, and assumptions are established, communicated, and used to support operational risk decisions.",
+    "function": "GOVERN",
+    "ai_implications": "Requires quantitative AI risk metrics (CVSS/CWE for LLM applications) to prioritize technical controls."
+  },
+  {
+    "category_id": "PR.AA",
+    "category": "Identity Management, Authentication, and Access Control",
+    "description": "Access to physical and logical assets is limited to authorized users, services, and hardware and managed commensurate with the assessed risk.",
+    "function": "PROTECT",
+    "ai_implications": "Enforces Role-Based Access Control (RBAC) and least privilege for LLM tool invocation and database connectors."
+  },
+  {
+    "category_id": "PR.DS",
+    "category": "Data Security",
+    "description": "Data are managed consistent with the organization's risk strategy to protect the confidentiality, integrity, and availability of information.",
+    "function": "PROTECT",
+    "ai_implications": "Output token Data Loss Prevention (DLP) and PII masking to prevent data leakage in LLM completions."
+  },
+  {
+    "category_id": "PR.PS",
+    "category": "Platform Security",
+    "description": "The hardware, software (e.g., firmware, operating systems, applications), and services of physical and virtual platforms are managed consistent with the organization's risk strategy.",
+    "function": "PROTECT",
+    "ai_implications": "Hardware security modules (HSM) and encrypted secrets vaults for API keys and LLM service accounts."
+  },
+  {
+    "category_id": "DE.CM",
+    "category": "Continuous Monitoring",
+    "description": "Assets are monitored to find anomalies, indicators of compromise, and other potentially adverse events.",
+    "function": "DETECT",
+    "ai_implications": "Continuous real-time telemetry logging of prompts, token consumption, and anomalous jailbreak attempts into SIEM."
+  },
+  {
+    "category_id": "RS.MA",
+    "category": "Incident Management",
+    "description": "Responses to detected cybersecurity events and incidents are managed and coordinated.",
+    "function": "RESPOND",
+    "ai_implications": "Incident response playbooks specifically tailored for generative AI hallucinations, prompt injections, and data exfiltration."
+  },
+  {
+    "category_id": "RC.RP",
+    "category": "Recovery Plan Execution",
+    "description": "Restoration activities are performed to ensure operational availability of systems affected by cybersecurity incidents.",
+    "function": "RECOVER",
+    "ai_implications": "Disaster recovery failover, cached deterministic fallbacks, and model redundancy mechanisms."
+  }
+]

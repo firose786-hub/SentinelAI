@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit & Analyze Code — Smart Code Inspection Platform | Group 2</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .orchestration-step {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .step-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--border-strong);
+      margin-top: 6px;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+    .orchestration-step.active .step-dot {
+      background-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-soft);
+      animation: pulse 1s infinite;
+    }
+    .orchestration-step.done .step-dot {
+      background-color: var(--success);
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.7; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <a href="/dashboard.html" class="brand-logo">
+        <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
+        <span class="brand-name">Sentinel</span>
+      </a>
+
+      <nav>
+        <ul class="nav-list">
+          <li><a href="/dashboard.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg> Dashboard</a></li>
+          <li><a href="/analysis.html" class="nav-link active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path></svg> Submit & analyze</a></li>
+          <li><a href="/findings.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> Analysis results</a></li>
+          <li><a href="/assistant.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> Code assistant</a></li>
+          <li><a href="/history.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg> History</a></li>
+          <li><a href="/reports.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> Reports</a></li>
+          <li><a href="/knowledge-base.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg> Knowledge base</a></li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        Group 2 · Smart Code Inspection Platform with Vulnerability Detection System
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+      <header class="app-header">
+        <h1 class="page-title">Submit & analyze</h1>
+        <div class="header-actions">
+          <button type="button" class="theme-toggle-btn" id="theme-toggle-btn" aria-label="Toggle theme">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="page-container">
+        <div class="grid-split">
+          <!-- Left Main Submission Column -->
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <section class="panel">
+              <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                <h2 class="panel-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path></svg>
+                  Code submission module
+                </h2>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span id="gemini-status-badge" style="font-size: 11.5px;"></span>
+                  <button type="button" class="btn btn-outline" id="api-key-btn" style="font-size: 12px; padding: 3px 8px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 12px; height: 12px;"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+                    Gemini AI Key
+                  </button>
+                </div>
+              </div>
+
+              <!-- Inline API Key panel for Analysis page -->
+              <div id="api-key-panel" style="display: none; background-color: var(--bg-surface-2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 10px 14px; margin-bottom: 12px;">
+                <p style="font-size: 12px; font-weight: 600; margin-bottom: 4px;">Gemini API Key (Optional Real-Time Semantic AI Inspector)</p>
+                <div style="display: flex; gap: 8px;">
+                  <input type="password" id="inline-gemini-key" class="form-control" placeholder="Paste your Gemini API Key here..." style="font-size: 12.5px;">
+                  <button type="button" class="btn btn-primary" id="save-inline-key-btn" style="white-space: nowrap; font-size: 12px; padding: 4px 10px;">Save</button>
+                  <button type="button" class="btn btn-outline" id="clear-inline-key-btn" style="white-space: nowrap; font-size: 12px; padding: 4px 10px;">Remove</button>
+                </div>
+                <p style="font-size: 11px; color: var(--fg-muted); margin-top: 4px;">
+                  When configured, deep real-time semantic analysis detects arbitrary code defects, edge cases, and security vulnerabilities.
+                </p>
+              </div>
+
+              <div style="display: flex; gap: 12px; margin-bottom: 14px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 140px;">
+                  <label class="form-label" for="language-select">Language</label>
+                  <select class="form-control" id="language-select">
+                    <option value="Auto-detect">Auto-detect</option>
+                    <option value="Python">Python</option>
+                    <option value="Java">Java</option>
+                    <option value="JavaScript">JavaScript</option>
+                    <option value="TypeScript">TypeScript</option>
+                    <option value="C">C</option>
+                    <option value="C++">C++</option>
+                  </select>
+                </div>
+                <div style="flex: 1; min-width: 140px;">
+                  <label class="form-label" for="filename-input">File name</label>
+                  <input type="text" class="form-control" id="filename-input" value="banking_service.py" style="font-family: var(--font-mono);">
+                </div>
+              </div>
+
+              <!-- Drag & Drop Zone -->
+              <div class="dropzone" id="dropzone">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path></svg>
+                <p style="font-weight: 600; font-size: 13.5px;">Drag and drop a source file, or click to browse</p>
+                <p style="font-size: 11.5px; color: var(--fg-muted); margin-top: 4px;">Supports .py, .java, .js, .ts, .c, .cpp and more</p>
+                <input type="file" id="file-input" style="display: none;" accept=".py,.java,.js,.ts,.c,.cpp">
+              </div>
+
+              <div style="margin-top: 16px;">
+                <label class="form-label" for="code-input">Or paste source code directly:</label>
+                <textarea class="form-control" id="code-input" rows="14" placeholder="def transfer(user, amount):&#10;    ..." spellcheck="false"></textarea>
+              </div>
+
+              <div style="margin-top: 16px;">
+                <button type="button" class="btn btn-primary" id="run-analysis-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  Run multi-agent analysis
+                </button>
+              </div>
+            </section>
+
+            <!-- Test Validation Samples -->
+            <section class="panel">
+              <div class="panel-header">
+                <h2 class="panel-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V2"></path><line x1="6" y1="2" x2="18" y2="2"></line><line x1="6" y1="9" x2="18" y2="9"></line></svg>
+                  Validation samples
+                </h2>
+              </div>
+              <p style="font-size: 13px; color: var(--fg-subtle); margin-bottom: 12px;">
+                Pre-configured test files with known vulnerability patterns to validate multi-agent detection accuracy:
+              </p>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="samples-container">
+                <!-- Loaded via analysis.js -->
+              </div>
+            </section>
+          </div>
+
+          <!-- Right Sidebar: Live Validation & Orchestration Status -->
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <section class="panel">
+              <div class="panel-header">
+                <h2 class="panel-title">Submission validation</h2>
+              </div>
+              <div id="validation-result">
+                <p style="font-size: 13px; color: var(--fg-muted);">Paste or upload code to see language detection and syntax validation.</p>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2 class="panel-title">Agent orchestration</h2>
+              </div>
+              <ol style="list-style: none; padding: 0;">
+                <li class="orchestration-step" id="step-0">
+                  <span class="step-dot"></span>
+                  <div>
+                    <p style="font-size: 13.5px; font-weight: 600;">Code Submission Module</p>
+                    <p style="font-size: 11.5px; color: var(--fg-muted);">language detection and syntax validation</p>
+                  </div>
+                </li>
+                <li class="orchestration-step" id="step-1">
+                  <span class="step-dot"></span>
+                  <div>
+                    <p style="font-size: 13.5px; font-weight: 600;">Code Analysis + Security agents</p>
+                    <p style="font-size: 11.5px; color: var(--fg-muted);">running in parallel over the source</p>
+                  </div>
+                </li>
+                <li class="orchestration-step" id="step-2">
+                  <span class="step-dot"></span>
+                  <div>
+                    <p style="font-size: 13.5px; font-weight: 600;">Remediation Agent</p>
+                    <p style="font-size: 11.5px; color: var(--fg-muted);">drafting fixes and corrected code</p>
+                  </div>
+                </li>
+                <li class="orchestration-step" id="step-3">
+                  <span class="step-dot"></span>
+                  <div>
+                    <p style="font-size: 13.5px; font-weight: 600;">PR Summary Agent</p>
+                    <p style="font-size: 11.5px; color: var(--fg-muted);">compiling the review and verdict</p>
+                  </div>
+                </li>
+              </ol>
+            </section>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/analysis.js"></script>
+</body>
+</html>

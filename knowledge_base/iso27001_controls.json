@@ -1,0 +1,58 @@
+[
+  {
+    "control_id": "A.5.1",
+    "clause": "Policies for Information Security",
+    "description": "Information security policy and topic-specific policies shall be defined, approved by management, published, communicated to and acknowledged by relevant personnel and relevant interested parties, and reviewed at planned intervals and if significant changes occur.",
+    "category": "Organizational Controls",
+    "ai_implications": "Requires formal enterprise policy governing Large Language Model usage, acceptable prompting guidelines, and data classification boundaries."
+  },
+  {
+    "control_id": "A.5.8",
+    "clause": "Information Security in Project Management",
+    "description": "Information security shall be integrated into project management throughout the project lifecycle.",
+    "category": "Organizational Controls",
+    "ai_implications": "Requires security gating, threat modeling, and model evaluation before deploying AI applications into production environments."
+  },
+  {
+    "control_id": "A.8.2",
+    "clause": "Privileged Access Rights",
+    "description": "The allocation and use of privileged access rights shall be restricted and managed.",
+    "category": "Technological Controls",
+    "ai_implications": "Autonomous tool-calling agents must have restricted API scopes and cannot inherit unfettered administrative database or cloud permissions."
+  },
+  {
+    "control_id": "A.8.5",
+    "clause": "Secure Authentication",
+    "description": "Secure authentication technologies and procedures shall be implemented based on information access restrictions and the topic-specific policy on access control.",
+    "category": "Technological Controls",
+    "ai_implications": "All user access to AI agent interfaces and administrative consoles must mandate Multi-Factor Authentication (MFA)."
+  },
+  {
+    "control_id": "A.8.8",
+    "clause": "Management of Technical Vulnerabilities",
+    "description": "Information about technical vulnerabilities of information systems being used shall be obtained, the organization's exposure to such vulnerabilities shall be evaluated and appropriate measures shall be taken.",
+    "category": "Technological Controls",
+    "ai_implications": "Mandates continuous adversarial prompt injection and jailbreak testing against LLM architectures and third-party AI APIs."
+  },
+  {
+    "control_id": "A.8.10",
+    "clause": "Information Deletion",
+    "description": "Data stored in information systems, devices or in any other storage media shall be deleted when no longer required.",
+    "category": "Technological Controls",
+    "ai_implications": "Data privacy and right-to-be-forgotten controls in vector databases and fine-tuning datasets."
+  },
+  {
+    "control_id": "A.8.20",
+    "clause": "Network Security",
+    "description": "Networks and network devices shall be secured, managed and controlled to protect information in systems and applications.",
+    "category": "Technological Controls",
+    "ai_implications": "LLM gateways and prompt firewalls must be placed at the ingress network perimeter to filter anomalous payloads."
+  },
+  {
+    "control_id": "A.8.28",
+    "clause": "Secure Coding",
+    "description": "Secure coding principles shall be applied to software development.",
+    "category": "Technological Controls",
+    "ai_implications": "AI-generated source code and automated scripts must undergo static application security testing (SAST) and software bill of materials (SBOM) validation."
+  }
+]
