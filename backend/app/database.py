@@ -170,20 +170,60 @@ def init_db():
         )
     """)
 
-    # Seed default admin user (admin / admin123)
-    cursor.execute("SELECT id FROM users WHERE username = 'admin'")
-    if not cursor.fetchone():
-        admin_pass_hash = hashlib.sha256("admin123".encode("utf-8")).hexdigest()
-        cursor.execute(
-            "INSERT INTO users (username, password_hash, email) VALUES (?, ?, ?)",
-            ("admin", admin_pass_hash, "admin@sentinelai.security")
+    # Security Access Logs Table for SOC and Audit Trail
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS security_logs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            username TEXT NOT NULL,
+            role TEXT NOT NULL,
+            action TEXT NOT NULL,
+            ip_address TEXT DEFAULT '127.0.0.1',
+            status TEXT DEFAULT 'SUCCESS'
         )
+    """)
+
+    # Migration: Ensure users table has role, full_name, and status columns
+    cursor.execute("PRAGMA table_info(users)")
+    existing_user_cols = [col[1] for col in cursor.fetchall()]
+    if "role" not in existing_user_cols:
+        cursor.execute("ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'Super Admin'")
+    if "full_name" not in existing_user_cols:
+        cursor.execute("ALTER TABLE users ADD COLUMN full_name TEXT DEFAULT ''")
+    if "status" not in existing_user_cols:
+        cursor.execute("ALTER TABLE users ADD COLUMN status TEXT DEFAULT 'Active'")
+
+    # Seed 6 Default Enterprise Roles (Preconfigured Demo Accounts)
+    default_role_accounts = [
+        ("admin", "admin123", "admin@sentinelai.security", "Super Admin", "Dr. Alexander Cross (Global Security Director)"),
+        ("ciso", "ciso123", "ciso@sentinelai.security", "CISO", "Elena Rostova (Chief Information Security Officer)"),
+        ("compliance", "comp123", "compliance@sentinelai.security", "Compliance Officer", "Marcus Vance (Lead GRC & Regulatory Auditor)"),
+        ("ai_engineer", "dev123", "ai.engineer@sentinelai.security", "AI Engineer", "Dr. Samantha Wei (Principal LLM Architect)"),
+        ("soc_analyst", "soc123", "soc@sentinelai.security", "SOC Analyst", "Karan Mehta (Senior Cyber Threat Responder)"),
+        ("auditor", "audit123", "external.auditor@kpmg-audit.com", "External Auditor", "Sarah Jenkins (ISO/IEC Lead External Auditor)"),
+    ]
+
+    for u_name, u_pass, u_email, u_role, u_fullname in default_role_accounts:
+        cursor.execute("SELECT id FROM users WHERE username = ?", (u_name,))
+        existing = cursor.fetchone()
+        p_hash = hashlib.sha256(u_pass.encode("utf-8")).hexdigest()
+        if not existing:
+            cursor.execute(
+                "INSERT INTO users (username, password_hash, email, role, full_name, status) VALUES (?, ?, ?, ?, ?, ?)",
+                (u_name, p_hash, u_email, u_role, u_fullname, "Active")
+            )
+        else:
+            # Update role and metadata if missing
+            cursor.execute(
+                "UPDATE users SET role = ?, full_name = ?, status = 'Active' WHERE username = ?",
+                (u_role, u_fullname, u_name)
+            )
 
     conn.commit()
     conn.close()
 
 
-# ---------------- User Authentication ----------------
+# ---------------- User Authentication & RBAC Management ----------------
 
 def authenticate_user(username: str, password: str) -> Optional[Dict[str, Any]]:
     init_db()
@@ -191,25 +231,51 @@ def authenticate_user(username: str, password: str) -> Optional[Dict[str, Any]]:
     cursor = conn.cursor()
     p_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
     cursor.execute(
-        "SELECT id, username, email FROM users WHERE username = ? AND password_hash = ?",
+        "SELECT id, username, email, role, full_name, status FROM users WHERE username = ? AND password_hash = ?",
         (username, p_hash)
     )
     row = cursor.fetchone()
-    conn.close()
     if row:
-        return {"id": row["id"], "username": row["username"], "email": row["email"]}
+        user_info = {
+            "id": row["id"],
+            "username": row["username"],
+            "email": row["email"],
+            "role": row["role"] if row["role"] else "Super Admin",
+            "full_name": row["full_name"] if row["full_name"] else row["username"],
+            "status": row["status"] if row["status"] else "Active"
+        }
+        # Log successful auth event
+        cursor.execute(
+            "INSERT INTO security_logs (username, role, action, status) VALUES (?, ?, ?, ?)",
+            (user_info["username"], user_info["role"], "User Sign-In Verified", "SUCCESS")
+        )
+        conn.commit()
+        conn.close()
+        return user_info
+
+    # Log failed auth event
+    cursor.execute(
+        "INSERT INTO security_logs (username, role, action, status) VALUES (?, ?, ?, ?)",
+        (username, "Unknown", "Failed Login Attempt (Invalid Password)", "FAILURE")
+    )
+    conn.commit()
+    conn.close()
     return None
 
 
-def register_user(username: str, password: str, email: str = "") -> bool:
+def register_user(username: str, password: str, email: str = "", role: str = "Compliance Officer", full_name: str = "") -> bool:
     init_db()
     conn = get_db_connection()
     cursor = conn.cursor()
     p_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
     try:
         cursor.execute(
-            "INSERT INTO users (username, password_hash, email) VALUES (?, ?, ?)",
-            (username, p_hash, email)
+            "INSERT INTO users (username, password_hash, email, role, full_name, status) VALUES (?, ?, ?, ?, ?, ?)",
+            (username, p_hash, email, role, full_name or username, "Active")
+        )
+        cursor.execute(
+            "INSERT INTO security_logs (username, role, action, status) VALUES (?, ?, ?, ?)",
+            (username, role, "Auditor Account Registered", "SUCCESS")
         )
         conn.commit()
         conn.close()
@@ -217,6 +283,80 @@ def register_user(username: str, password: str, email: str = "") -> bool:
     except sqlite3.IntegrityError:
         conn.close()
         return False
+
+
+def get_all_users() -> List[Dict[str, Any]]:
+    init_db()
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, username, email, role, full_name, status, created_at FROM users ORDER BY id ASC")
+    rows = cursor.fetchall()
+    conn.close()
+    return [
+        {
+            "id": r["id"],
+            "username": r["username"],
+            "email": r["email"] or "N/A",
+            "role": r["role"] or "Auditor",
+            "full_name": r["full_name"] or r["username"],
+            "status": r["status"] or "Active",
+            "created_at": str(r["created_at"])
+        }
+        for r in rows
+    ]
+
+
+def update_user_role(user_id: int, new_role: str) -> bool:
+    init_db()
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET role = ? WHERE id = ?", (new_role, user_id))
+    cursor.execute(
+        "INSERT INTO security_logs (username, role, action, status) VALUES (?, ?, ?, ?)",
+        (f"User#{user_id}", new_role, f"Role Changed to {new_role}", "SUCCESS")
+    )
+    conn.commit()
+    conn.close()
+    return True
+
+
+def update_user_status(user_id: int, new_status: str) -> bool:
+    init_db()
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET status = ? WHERE id = ?", (new_status, user_id))
+    cursor.execute(
+        "INSERT INTO security_logs (username, role, action, status) VALUES (?, ?, ?, ?)",
+        (f"User#{user_id}", "Admin", f"Account Status Changed to {new_status}", "SUCCESS")
+    )
+    conn.commit()
+    conn.close()
+    return True
+
+
+def log_security_event(username: str, role: str, action: str, status: str = "SUCCESS", ip: str = "127.0.0.1"):
+    try:
+        init_db()
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO security_logs (username, role, action, status, ip_address) VALUES (?, ?, ?, ?, ?)",
+            (username, role, action, status, ip)
+        )
+        conn.commit()
+        conn.close()
+    except Exception:
+        pass
+
+
+def get_security_logs(limit: int = 50) -> List[Dict[str, Any]]:
+    init_db()
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, timestamp, username, role, action, ip_address, status FROM security_logs ORDER BY id DESC LIMIT ?", (limit,))
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
 
 
 # ---------------- Code Analysis Database Operations ----------------
