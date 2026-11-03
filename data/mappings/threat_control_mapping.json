@@ -1,0 +1,185 @@
+[
+  {
+    "threat_id": "OWASP-LLM01-2025",
+    "threat_name": "Prompt Injection",
+    "primary_nist_controls": [
+      "NIST-SP800-53-SI-10",
+      "NIST-SP800-53-SC-7"
+    ],
+    "secondary_nist_controls": [
+      "NIST-SP800-53-AC-3",
+      "NIST-SP800-53-AU-2"
+    ],
+    "iso_27001_controls": [
+      "A.8.28 (Secure coding)",
+      "A.8.20 (Network security)",
+      "A.5.15 (Access control)"
+    ],
+    "evidence_chain_trigger": "Input validation failure on user prompt; prompt firewall bypassed by adversarial semantic perturbation.",
+    "compliance_impact": "Causes immediate non-compliance rating for NIST SI-10 and ISO A.8.28; degrades overall system integrity score by 25%.",
+    "recommended_remediation": "Deploy NeMo Guardrails with semantic cosine similarity filters, enforce strict JSON schema delimiters, and restrict LLM autonomous tool execution scope."
+  },
+  {
+    "threat_id": "OWASP-LLM02-2025",
+    "threat_name": "Sensitive Information Disclosure",
+    "primary_nist_controls": [
+      "NIST-SP800-53-SC-28",
+      "NIST-SP800-53-AC-6"
+    ],
+    "secondary_nist_controls": [
+      "NIST-SP800-53-SI-11",
+      "NIST-SP800-53-AU-2"
+    ],
+    "iso_27001_controls": [
+      "A.8.24 (Use of cryptography)",
+      "A.8.12 (Data leakage prevention)",
+      "A.8.2 (Privileged access rights)"
+    ],
+    "evidence_chain_trigger": "Regex or regex-token match of PII (PAN/Aadhaar/Credit Card) or secret API keys in raw LLM output stream.",
+    "compliance_impact": "Direct violation of DPDP Act 2023 Section 8 and NIST SC-28; audit status switches to CRITICAL FINDING with immediate financial penalty liability.",
+    "recommended_remediation": "Implement post-generation Data Loss Prevention (DLP) token filters, scrub PII from RAG chunk indexes, and redact internal keys."
+  },
+  {
+    "threat_id": "OWASP-LLM03-2025",
+    "threat_name": "Supply Chain Vulnerabilities",
+    "primary_nist_controls": [
+      "NIST-SP800-53-IA-5",
+      "NIST-SP800-53-AC-2"
+    ],
+    "secondary_nist_controls": [
+      "NIST-SP800-53-AU-10"
+    ],
+    "iso_27001_controls": [
+      "A.5.19 (Information security in supplier relationships)",
+      "A.8.28 (Secure coding)"
+    ],
+    "evidence_chain_trigger": "Unverified model checkpoint loaded without cryptographic hash verification; vulnerable third-party Python package in dependency tree.",
+    "compliance_impact": "Fails ISO A.5.19 and NIST IA-5; requires immediate quarantine of inference container.",
+    "recommended_remediation": "Enforce Software Bill of Materials (SBOM) scanning via Bandit/Pip-audit, verify HuggingFace commit SHA-256 signatures, and sandbox model weights."
+  },
+  {
+    "threat_id": "OWASP-LLM04-2025",
+    "threat_name": "Data and Model Poisoning",
+    "primary_nist_controls": [
+      "NIST-SP800-53-AU-10",
+      "NIST-SP800-53-SC-28"
+    ],
+    "secondary_nist_controls": [
+      "NIST-SP800-53-AC-3"
+    ],
+    "iso_27001_controls": [
+      "A.8.15 (Logging)",
+      "A.8.24 (Use of cryptography)",
+      "A.5.15 (Access control)"
+    ],
+    "evidence_chain_trigger": "Unauthorized modification detected in vector knowledge base documents or training dataset checksum mismatch.",
+    "compliance_impact": "Compromises model evidentiary provenance under NIST AU-10 and ISO A.8.15.",
+    "recommended_remediation": "Maintain cryptographic hash trees (Merkle roots) for all RAG documents and require dual-custody authorization for knowledge base updates."
+  },
+  {
+    "threat_id": "OWASP-LLM05-2025",
+    "threat_name": "Improper Output Handling",
+    "primary_nist_controls": [
+      "NIST-SP800-53-SI-10",
+      "NIST-SP800-53-SI-11"
+    ],
+    "secondary_nist_controls": [
+      "NIST-SP800-53-SC-7"
+    ],
+    "iso_27001_controls": [
+      "A.8.28 (Secure coding)"
+    ],
+    "evidence_chain_trigger": "Raw LLM output executed directly by client browser as HTML/JS or passed unsanitized into SQL/OS shell execution functions.",
+    "compliance_impact": "Direct violation of NIST SI-10 and OWASP Top 10 A03:Injection; triggers HIGH vulnerability rating.",
+    "recommended_remediation": "Apply context-aware output encoding (HTML escaping, parameterized queries for SQL tools, and strict AST parsing for code generators)."
+  },
+  {
+    "threat_id": "OWASP-LLM06-2025",
+    "threat_name": "Excessive Agency",
+    "primary_nist_controls": [
+      "NIST-SP800-53-AC-6",
+      "NIST-SP800-53-AC-3"
+    ],
+    "secondary_nist_controls": [
+      "NIST-SP800-53-IR-4"
+    ],
+    "iso_27001_controls": [
+      "A.8.2 (Privileged access rights)",
+      "A.8.18 (Use of privileged utility programs)"
+    ],
+    "evidence_chain_trigger": "Autonomous agent executes irreversible database DELETE, financial transfer, or external communication without human confirmation.",
+    "compliance_impact": "Breaches NIST AC-6 least privilege; exposes enterprise to immediate direct operational loss.",
+    "recommended_remediation": "Implement Human-in-the-Loop (HITL) gates for sensitive actions, restrict tool execution to idempotent read-only APIs, and enforce hard execution step ceilings."
+  },
+  {
+    "threat_id": "OWASP-LLM07-2025",
+    "threat_name": "System Prompt Leakage",
+    "primary_nist_controls": [
+      "NIST-SP800-53-SI-11",
+      "NIST-SP800-53-SC-7"
+    ],
+    "secondary_nist_controls": [
+      "NIST-SP800-53-AU-2"
+    ],
+    "iso_27001_controls": [
+      "A.8.28 (Secure coding)",
+      "A.8.20 (Network security)"
+    ],
+    "evidence_chain_trigger": "Cosine similarity of LLM response with system prompt exceeds 0.85; meta-prompt extraction prompt successful.",
+    "compliance_impact": "Compromises intellectual property protection controls under ISO A.8.28.",
+    "recommended_remediation": "Separate system instructions from user conversational history using strict role tags (`role: system` vs `role: user`) and install post-generation similarity suppression filters."
+  },
+  {
+    "threat_id": "OWASP-LLM08-2025",
+    "threat_name": "Vector and Embedding Weaknesses",
+    "primary_nist_controls": [
+      "NIST-SP800-53-SC-28",
+      "NIST-SP800-53-AC-3"
+    ],
+    "secondary_nist_controls": [
+      "NIST-SP800-53-AU-2"
+    ],
+    "iso_27001_controls": [
+      "A.8.24 (Use of cryptography)",
+      "A.5.15 (Access control)"
+    ],
+    "evidence_chain_trigger": "Cross-tenant document retrieval detected in RAG query; unencrypted vector store accessible on public network interface.",
+    "compliance_impact": "Breaches multi-tenant isolation under NIST AC-3 and ISO A.5.15.",
+    "recommended_remediation": "Partition vector collections by tenant ID with cryptographic token verification, and encrypt vector index files at rest."
+  },
+  {
+    "threat_id": "OWASP-LLM09-2025",
+    "threat_name": "Misinformation & Hallucination",
+    "primary_nist_controls": [
+      "NIST-SP800-53-AU-2",
+      "NIST-SP800-53-SI-10"
+    ],
+    "secondary_nist_controls": [
+      "NIST-SP800-53-AU-10"
+    ],
+    "iso_27001_controls": [
+      "A.8.15 (Logging)"
+    ],
+    "evidence_chain_trigger": "Factual consistency score between generated response and retrieved context falls below 0.60.",
+    "compliance_impact": "Exposes organization to legal liability under consumer protection guidelines and DPDP accuracy mandates.",
+    "recommended_remediation": "Anchor LLM inference to verified RAG ground-truth documents with temperature set to 0.0, and require citations with exact sentence spans."
+  },
+  {
+    "threat_id": "OWASP-LLM10-2025",
+    "threat_name": "Unbounded Consumption (DoS)",
+    "primary_nist_controls": [
+      "NIST-SP800-53-SC-7",
+      "NIST-SP800-53-IR-5"
+    ],
+    "secondary_nist_controls": [
+      "NIST-SP800-53-IR-4"
+    ],
+    "iso_27001_controls": [
+      "A.8.20 (Network security)",
+      "A.8.16 (Monitoring activities)"
+    ],
+    "evidence_chain_trigger": "A single IP or user account submits more than 50 requests/min or exceeds token limit thresholds by 300%.",
+    "compliance_impact": "Threatens service availability SLAs and violates NIST SC-7 boundary monitoring.",
+    "recommended_remediation": "Implement Token-Bucket rate limiting at the API gateway, set max token length bounds on incoming prompts, and configure automated billing kill-switches."
+  }
+]

@@ -1,0 +1,25 @@
+nist_control_code,nist_control_name,iso_27001_control,iso_27001_title,iso_theme,mapping_relationship,nist_olir_rationale
+AC-2,Account Management,A.5.15,Access control,Organizational,Subset-of,ISO A.5.15 requires rules for access control which directly correlates with establishing and managing system accounts under AC-2.
+AC-2,Account Management,A.5.18,Access rights,Organizational,Equivalent,ISO A.5.18 governs granting review and modification of access rights aligning with AC-2 account lifecycle procedures.
+AC-3,Access Enforcement,A.5.15,Access control,Organizational,Equivalent,Both controls enforce approved access authorizations based on organizational access control policies and RBAC.
+AC-3,Access Enforcement,A.8.2,Privileged access rights,Technological,Intersects,Enforces technical restrictions on privileged execution environments such as LLM tool calling and agent privilege scopes.
+AC-6,Least Privilege,A.8.2,Privileged access rights,Technological,Equivalent,Both mandates restrict users and automated agents to the absolute minimum necessary privileges for duty completion.
+AC-6,Least Privilege,A.8.18,Use of privileged utility programs,Technological,Subset-of,Regulates utility software and high-privilege agent action execution in secure development environments.
+IA-2,Identification and Authentication,A.5.16,Identity management,Organizational,Equivalent,Requires full lifecycle management and allocation of unique identities for all entities accessing systems.
+IA-2,Identification and Authentication,A.5.17,Authentication information,Organizational,Equivalent,Controls the verification of authentication factors including passwords tokens and multi-factor authenticators.
+IA-5,Authenticator Management,A.5.17,Authentication information,Organizational,Equivalent,Governs storage distribution expiration and cryptographic protection of authenticators and API keys.
+IA-5,Authenticator Management,A.8.24,Use of cryptography,Technological,Subset-of,Enforces cryptographic storage and generation of authenticators tokens and secret salts.
+SI-10,Information Input Validation,A.8.28,Secure coding,Technological,Equivalent,Requires application-level validation of all incoming data streams and user inputs to prevent injection attacks.
+SI-11,Error Handling,A.8.28,Secure coding,Technological,Subset-of,Ensures applications do not expose sensitive internal data memory states or system prompts in error responses.
+SC-7,Boundary Protection,A.8.20,Network security,Technological,Equivalent,Enforces boundary controls firewalls and segmentation between untrusted networks and internal model infrastructures.
+SC-7,Boundary Protection,A.8.22,Segregation of networks,Technological,Subset-of,Requires network separation between public LLM frontends vector databases and private training data backends.
+SC-28,Protection of Information at Rest,A.8.24,Use of cryptography,Technological,Equivalent,Mandates encryption algorithms and key management for data resting in databases file stores and embeddings.
+AU-2,Event Logging,A.8.15,Logging,Technological,Equivalent,Requires recording of operational events exceptions faults and security-relevant user/agent transactions.
+AU-10,Non-repudiation,A.8.15,Logging,Technological,Subset-of,Guarantees audit trail immutability and non-repudiation through timestamping and cryptographic record signing.
+AU-10,Non-repudiation,A.8.24,Use of cryptography,Technological,Subset-of,Uses cryptographic hashing (e.g. SHA-256) and digital signatures to confirm audit log authenticity.
+IR-4,Incident Handling,A.5.24,Information security incident management planning and preparation,Organizational,Equivalent,Establishes structured procedures for containment triage investigation and remediation of security events.
+IR-4,Incident Handling,A.5.26,Response to information security incidents,Organizational,Equivalent,Direct response actions taken against verified threat alerts including automated LLM circuit breakers.
+IR-5,Incident Monitoring,A.5.25,Assessment and decision on information security events,Organizational,Equivalent,Systematic evaluation and monitoring of security telemetry to determine incident severity.
+IR-5,Incident Monitoring,A.8.16,Monitoring activities,Technological,Equivalent,Real-time automated surveillance of networks systems and application behaviors for anomalous patterns.
+IR-6,Incident Reporting,A.5.24,Information security incident management planning and preparation,Organizational,Subset-of,Establishes mandatory reporting chains to management and regulatory bodies.
+IR-6,Incident Reporting,A.6.8,Information security event reporting,People,Equivalent,Mandates immediate reporting of identified vulnerabilities or security events to designated enterprise authorities.
