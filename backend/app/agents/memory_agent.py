@@ -140,3 +140,22 @@ class MemoryAgent:
             summary_of_progress=progress_summary,
             recurring_findings=recurring_list
         )
+
+    def compare_with_previous(
+        self,
+        org_id: str,
+        current_compliance_score: int,
+        current_ai_security_score: int,
+        current_risk_score: int,
+        current_findings: List[AISecurityFinding] = None,
+        past_audits: List[AuditRecord] = None
+    ) -> MemoryComparison:
+        """Alias for unit test compatibility."""
+        return self.compare_with_history(
+            current_org_id=org_id,
+            current_overall_score=current_compliance_score,
+            current_security_score=current_ai_security_score,
+            current_risk_score=current_risk_score,
+            current_findings=current_findings or [],
+            past_audits=past_audits or []
+        )

@@ -9,6 +9,31 @@
 
 ---
 
+### 🎓 Academic Project Registration Details
+- **Project Title**: *Agentic AI-Based Smart Compliance Auditor & AI Security Validation Platform for Enterprise LLM Systems*
+- **Platform**: SentinelAI Enterprise SOC v3.0
+- **Batch Code**: `AIML-B05` · Major Project · 2026–2027
+- **Supervisor / Guide**: Dr. Mahammad Firose Shaik ([`firose786-hub`](https://github.com/firose786-hub/SentinelAI))
+- **Team**: Pattem Dolly Sai Iswarya (`23BQ1A61A4`), Palamarthi Shiva Sai Devi Apoorva (`23BQ1A6196`), Palagani Hari Siva Prasad (`24BQ5A6112`), Mallavarapu Pradeep Chandra (`23BQ1A6174`)
+
+---
+
+### 📚 Official Project Documentation Suite (12 Modules)
+1. **[Master Gap Analysis](PROJECT_GAP_ANALYSIS.md)**: Feature breakdown, verified capabilities, resolved bugs, and completion matrix.
+2. **[System Architecture](docs/PROJECT_ARCHITECTURE.md)**: 5-tier topology, multi-agent sequence diagrams, and dual-runtime design.
+3. **[10-Module Implementation](docs/MODULE_DOCUMENTATION.md)**: Detailed breakdown of Modules M1 to M10.
+4. **[12 Multi-Agent Specifications](docs/AGENT_DOCUMENTATION.md)**: Agent contracts, data contracts, and execution logic.
+5. **[REST API Documentation](docs/API_DOCUMENTATION.md)**: Complete FastAPI endpoints specification and request/response payloads.
+6. **[Database Architecture](docs/DATABASE_DOCUMENTATION.md)**: SQLite 7-table schema, ER diagram, and security logs.
+7. **[Automated Testing Report](docs/TESTING_REPORT.md)**: 42/42 passing Pytest tests, code coverage, and verification.
+8. **[Research & Innovations](docs/RESEARCH_AND_INNOVATION.md)**: Evidence chain formulas, judge reliability benchmarks, and SPEP cost matrix.
+9. **[Installation & Setup](docs/INSTALLATION_AND_SETUP.md)**: Prerequisites, 1-click launchers, and troubleshooting.
+10. **[User & Command Center Guide](docs/USER_GUIDE.md)**: Persona selection, attack simulation, and report generation.
+11. **[Known Limitations](docs/KNOWN_LIMITATIONS.md)**: Academic disclaimers, probabilistic LLM caveats, and future scope.
+12. **[Master Viva Blueprint](PROJECT_MASTER_BLUEPRINT.md)**: Complete quick cheatsheet for faculty review and viva defense.
+
+---
+
 ## 📖 Table of Contents
 
 1. [Executive Abstract](#-executive-abstract)

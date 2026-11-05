@@ -93,6 +93,14 @@ class RedTeamAgent:
                     status = "Protected"
                     observation = "SIMULATED EXPLOIT BLOCKED: Cryptographic namespace isolation and tenant RBAC verified prior to vector similarity calculations."
 
+            elif owasp_id == "LLM09":  # Misinformation & Hallucination
+                if not controls.get("has_secure_ai_pipeline", False) or not controls.get("has_prompt_firewall", False):
+                    status = "Vulnerable"
+                    observation = "SIMULATED EXPLOIT SUCCESSFUL: Adversarial prompt elicited ungrounded legal citations and hallucinated regulatory requirements without confidence threshold alerts."
+                else:
+                    status = "Protected"
+                    observation = "SIMULATED EXPLOIT BLOCKED: Strict RAG semantic grounding check and cross-encoder verification suppressed hallucinated output."
+
             elif owasp_id == "LLM10":  # Model DoS
                 if not controls.get("has_audit_logging_and_monitoring", False):
                     status = "Vulnerable"
@@ -115,6 +123,7 @@ class RedTeamAgent:
                 "simulated_payload": item["simulated_payload"],
                 "status": status,
                 "red_team_observation": observation,
+                "simulated_observation": observation,
                 "description": item["description"],
                 "remediation_guidance": item["remediation_guidance"]
             })

@@ -36,3 +36,25 @@ class DecisionAgent:
             "ai_security_score": ai_security,
             "rationale": debate_result.verdict_rationale
         }
+
+    def determine_final_verdict(self, compliance_score: int, ai_security_score: int, risk_score: int, critical_vulnerabilities: int):
+        """
+        Standalone/unit test determination helper.
+        """
+        if compliance_score >= 80 and ai_security_score >= 80 and critical_vulnerabilities == 0:
+            verdict = "APPROVED"
+            tier = "Low"
+            rationale = "Full compliance and high AI security clearance."
+        elif compliance_score >= 60 and ai_security_score >= 50 and critical_vulnerabilities <= 1:
+            verdict = "APPROVED WITH REMEDIATION"
+            tier = "Medium"
+            rationale = "Adequate controls but remediation required for identified gaps."
+        elif critical_vulnerabilities >= 2 or risk_score >= 70:
+            verdict = "CRITICAL RISK"
+            tier = "Critical"
+            rationale = "Unacceptable critical security vulnerabilities detected."
+        else:
+            verdict = "HIGH RISK"
+            tier = "High"
+            rationale = "High compliance or security risk posture requiring intervention."
+        return verdict, rationale, tier

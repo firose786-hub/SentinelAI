@@ -46,6 +46,12 @@ class BlueTeamAgent:
 
             finding_copy = dict(rf)
             finding_copy["blue_team_defense"] = defense_argument
+            finding_copy["defensive_posture"] = defense_argument
+            finding_copy["remediation"] = rf.get("remediation_guidance", "Enforce defense-in-depth controls.")
             defensive_findings.append(finding_copy)
 
         return defensive_findings
+
+    def analyze_defenses(self, org: OrganizationProfile, red_findings: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Alias for evaluate_defenses for compatibility."""
+        return self.evaluate_defenses(org, red_findings)

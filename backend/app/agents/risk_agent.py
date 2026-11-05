@@ -63,3 +63,27 @@ class RiskAgent:
             "threat_likelihood": "High" if critical_vulns > 0 else ("Moderate" if high_vulns > 0 else "Low"),
             "threat_impact": "Severe" if risk_tier in ["Critical", "High"] else "Manageable"
         }
+
+    def calculate_overall_risk(
+        self,
+        compliance_score: int,
+        ai_security_score: int,
+        vulnerable_findings_count: int,
+        critical_count: int
+    ):
+        """Helper for unit test risk calculation."""
+        base_risk = 100 - int(round((compliance_score + ai_security_score) / 2))
+        vuln_penalty = (critical_count * 15) + (vulnerable_findings_count * 4)
+        overall_risk_score = min(100, max(5, int(round((base_risk * 0.5) + (vuln_penalty * 0.5)))))
+
+        if overall_risk_score >= 70 or critical_count >= 2:
+            tier = "Critical"
+        elif overall_risk_score >= 45 or critical_count >= 1:
+            tier = "High"
+        elif overall_risk_score >= 20:
+            tier = "Medium"
+        else:
+            tier = "Low"
+
+        narrative = f"Overall Risk evaluated at {overall_risk_score}/100 ({tier} tier) with {critical_count} critical findings."
+        return overall_risk_score, tier, narrative

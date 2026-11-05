@@ -102,3 +102,7 @@ class RoadmapAgent:
         items.sort(key=lambda x: (priority_order.get(x.priority, 4), x.target_days))
 
         return items
+
+    def generate_roadmap(self, controls: List[ControlAssessment], ai_findings: List[AISecurityFinding]) -> List[RoadmapItem]:
+        """Alias for build_roadmap for compatibility."""
+        return self.build_roadmap(controls, ai_findings)
