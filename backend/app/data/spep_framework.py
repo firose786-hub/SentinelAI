@@ -192,86 +192,106 @@ def compute_cosine_trigger_score(text: str) -> Tuple[float, List[str]]:
     return round(score, 3), matched_tokens
 
 
-def sanitize_dual_channel_prompt(instruction: str, untrusted_data: str) -> Dict[str, Any]:
+def sanitize_dual_channel_prompt(prompt_or_instruction: str, untrusted_data: str = None):
     """
-    Enforces Pattern 2 (Instruction-Data Separation) and Pattern 1 (Contextual Sanitization).
-    Separates Control Plane from Data Plane, strips injection delimiters, and produces
-    a hardened structured payload.
+    Dual-channel sanitizer. Supports both:
+    1. UI testbed: sanitize_dual_channel_prompt(p_inj) -> (sanitized_str, is_trig_bool, cos_score_float)
+    2. Pipeline: sanitize_dual_channel_prompt(instruction, untrusted_data) -> dict
     """
-    cosine_score, flagged_tokens = compute_cosine_trigger_score(untrusted_data)
-    
-    sanitized_data = untrusted_data
-    for token in flagged_tokens:
-        sanitized_data = re.sub(re.escape(token), f"[BLOCKED_TRIGGER: {token.upper()}]", sanitized_data, flags=re.IGNORECASE)
-
-    hardened_prompt_payload = {
-        "control_plane": {
-            "system_instruction": instruction.strip(),
-            "role_boundary": "IMMUTABLE_SYSTEM_POLICY",
-            "enforce_sandbox": True
-        },
-        "data_plane": {
-            "raw_input_isolated": sanitized_data.strip(),
-            "is_untrusted_data": True,
-            "adversarial_trigger_score": cosine_score,
-            "flagged_tokens_detected": flagged_tokens
-        },
-        "dual_channel_metadata": {
-            "schema_version": "SPEP-2.0-DualChannel",
-            "injection_status": "HARDENED_AND_ISOLATED" if flagged_tokens else "CLEAN_INPUT",
-            "channel_separation_enforced": True
-        }
-    }
-    
-    return hardened_prompt_payload
-
-
-def enforce_cloud_api_confinement(cloud_provider: str, requested_command: str) -> Dict[str, Any]:
-    """
-    Enforces Pattern 4: Output Confinement & API Allowlist Validation.
-    Intercepts model-generated tool/CLI commands before execution.
-    """
-    provider = cloud_provider.upper()
-    if "AWS" in provider:
-        p_key = "AWS"
-    elif "GCP" in provider:
-        p_key = "GCP"
-    elif "AZURE" in provider:
-        p_key = "Azure"
+    if untrusted_data is None:
+        raw_text = prompt_or_instruction
+        cosine_score, flagged_tokens = compute_cosine_trigger_score(raw_text)
+        sanitized_data = raw_text
+        for token in flagged_tokens:
+            sanitized_data = re.sub(re.escape(token), f"[BLOCKED_TRIGGER: {token.upper()}]", sanitized_data, flags=re.IGNORECASE)
+        is_trig = len(flagged_tokens) > 0 or cosine_score >= 0.40
+        return sanitized_data, is_trig, cosine_score
     else:
-        p_key = "AWS"
+        instruction = prompt_or_instruction
+        cosine_score, flagged_tokens = compute_cosine_trigger_score(untrusted_data)
+        
+        sanitized_data = untrusted_data
+        for token in flagged_tokens:
+            sanitized_data = re.sub(re.escape(token), f"[BLOCKED_TRIGGER: {token.upper()}]", sanitized_data, flags=re.IGNORECASE)
 
-    rules = CLOUD_API_WHITELISTS.get(p_key, CLOUD_API_WHITELISTS["AWS"])
-    cmd_lower = requested_command.lower()
-    
-    is_blocked = False
-    violation_reason = ""
-    matched_verb = "Generic Action"
+        hardened_prompt_payload = {
+            "control_plane": {
+                "system_instruction": instruction.strip(),
+                "role_boundary": "IMMUTABLE_SYSTEM_POLICY",
+                "enforce_sandbox": True
+            },
+            "data_plane": {
+                "raw_input_isolated": sanitized_data.strip(),
+                "is_untrusted_data": True,
+                "adversarial_trigger_score": cosine_score,
+                "flagged_tokens_detected": flagged_tokens
+            },
+            "dual_channel_metadata": {
+                "schema_version": "SPEP-2.0-DualChannel",
+                "injection_status": "HARDENED_AND_ISOLATED" if flagged_tokens else "CLEAN_INPUT",
+                "channel_separation_enforced": True
+            }
+        }
+        return hardened_prompt_payload
 
-    for blocked in rules["blocked_verbs"]:
-        verb_token = blocked.split(":")[-1].split(".")[-1].split("/")[-1].lower()
-        if verb_token in cmd_lower or blocked.lower() in cmd_lower:
-            is_blocked = True
-            matched_verb = blocked
-            violation_reason = f"Security Violation (CWE-284): Privileged/Destructive cloud verb '{blocked}' is outside authorized read-only whitelist."
-            break
 
-    if not is_blocked:
-        for allowed in rules["allowed_verbs"]:
-            verb_token = allowed.split(":")[-1].split(".")[-1].split("/")[-1].lower()
-            if verb_token in cmd_lower or allowed.lower() in cmd_lower:
-                matched_verb = allowed
+def enforce_cloud_api_confinement(cloud_provider_or_url: str, requested_command: str = None):
+    """
+    Enforces Output Confinement & API Allowlist Validation.
+    Supports both:
+    1. UI testbed: enforce_cloud_api_confinement(test_url) -> (is_confinement_active_bool, message_str)
+    2. Pipeline: enforce_cloud_api_confinement(cloud_provider, requested_command) -> dict
+    """
+    if requested_command is None:
+        url = cloud_provider_or_url.strip()
+        allowed_domains = ["api.openai.com", "generativelanguage.googleapis.com", "api.anthropic.com", "localhost", "127.0.0.1"]
+        is_allowed = any(domain in url.lower() for domain in allowed_domains)
+        if is_allowed:
+            return True, f"Outbound target '{url}' verified against trusted enterprise AI vendor allowlist."
+        else:
+            return False, f"Outbound target '{url}' denied by boundary confinement gate (untrusted domain)."
+    else:
+        provider = cloud_provider_or_url.upper()
+        if "AWS" in provider:
+            p_key = "AWS"
+        elif "GCP" in provider:
+            p_key = "GCP"
+        elif "AZURE" in provider:
+            p_key = "Azure"
+        else:
+            p_key = "AWS"
+
+        rules = CLOUD_API_WHITELISTS.get(p_key, CLOUD_API_WHITELISTS["AWS"])
+        cmd_lower = requested_command.lower()
+        
+        is_blocked = False
+        violation_reason = ""
+        matched_verb = "Generic Action"
+
+        for blocked in rules["blocked_verbs"]:
+            verb_token = blocked.split(":")[-1].split(".")[-1].split("/")[-1].lower()
+            if verb_token in cmd_lower or blocked.lower() in cmd_lower:
+                is_blocked = True
+                matched_verb = blocked
+                violation_reason = f"Security Violation (CWE-284): Privileged/Destructive cloud verb '{blocked}' is outside authorized read-only whitelist."
                 break
 
-    return {
-        "cloud_provider": p_key,
-        "requested_command": requested_command,
-        "matched_verb": matched_verb,
-        "status": "BLOCKED (Denied by Confinement Gate)" if is_blocked else "ALLOWED (Verified Against Whitelist)",
-        "is_allowed": not is_blocked,
-        "violation_reason": violation_reason if is_blocked else "Command strictly adheres to allowed cloud service verbs.",
-        "gate_action": "DROP_AND_ALERT" if is_blocked else "PERMIT_EXECUTION"
-    }
+        if not is_blocked:
+            for allowed in rules["allowed_verbs"]:
+                verb_token = allowed.split(":")[-1].split(".")[-1].split("/")[-1].lower()
+                if verb_token in cmd_lower or allowed.lower() in cmd_lower:
+                    matched_verb = allowed
+                    break
+
+        return {
+            "cloud_provider": p_key,
+            "requested_command": requested_command,
+            "matched_verb": matched_verb,
+            "status": "BLOCKED (Denied by Confinement Gate)" if is_blocked else "ALLOWED (Verified Against Whitelist)",
+            "is_allowed": not is_blocked,
+            "violation_reason": violation_reason if is_blocked else "Command strictly adheres to allowed cloud service verbs.",
+            "gate_action": "DROP_AND_ALERT" if is_blocked else "PERMIT_EXECUTION"
+        }
 
 
 def verify_step_up_authorization(action_description: str, approval_token: str) -> Dict[str, Any]:

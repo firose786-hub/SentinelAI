@@ -1,0 +1,162 @@
+[
+  {
+    "threat_id": "LLM01",
+    "threat_title": "Prompt Injection & Jailbreak",
+    "threat_source": "OWASP LLM (2025)",
+    "mitre_atlas_technique": "AML.T0051: LLM Prompt Injection / AML.T0054: LLM Jailbreak",
+    "cwe_id": "CWE-77",
+    "severity": "Critical",
+    "mapped_controls": {
+      "nist_csf_2_0": "PR.DS-01, PR.PS-01 (Protect: Data & Platform Security)",
+      "nist_sp_800_53_r5": "AC-3: Access Enforcement, SI-10: Information Input Validation",
+      "iso_27001_2022": "A.8.7 (Protection Against Malware), A.8.28 (Secure Coding)"
+    },
+    "self_assessment_question": "Does your enterprise deploy an automated Semantic Prompt Firewall (ISF/RCS) to sanitize incoming user prompts and isolate control instructions from untrusted data?",
+    "evaluation_key": "has_prompt_firewall",
+    "remediation_spep": "SPEP-01 (Contextual Sanitization) + SPEP-02 (Instruction-Data Separation)"
+  },
+  {
+    "threat_id": "LLM02",
+    "threat_title": "Sensitive Information Disclosure",
+    "threat_source": "OWASP LLM (2025)",
+    "mitre_atlas_technique": "AML.T0048: Insecure Output Handling / AML.T0035: Exfiltration via ML Model",
+    "cwe_id": "CWE-200",
+    "severity": "High",
+    "mapped_controls": {
+      "nist_csf_2_0": "PR.DS-02, PR.DS-05 (Data Security & Leakage Protection)",
+      "nist_sp_800_53_r5": "AC-4: Information Flow Enforcement, SC-8: Transmission Confidentiality",
+      "iso_27001_2022": "A.8.12 (Data Leakage Prevention), A.8.24 (Use of Cryptography)"
+    },
+    "self_assessment_question": "Is output token DLP filtering and real-time PII/credential scrubbing implemented on all LLM generated completions before returning to clients?",
+    "evaluation_key": "has_output_dlp",
+    "remediation_spep": "SPEP-04 (Output Confinement & Token Masking)"
+  },
+  {
+    "threat_id": "LLM03",
+    "threat_title": "Supply Chain Vulnerabilities & Compromised Base Models",
+    "threat_source": "OWASP LLM (2025)",
+    "mitre_atlas_technique": "AML.T0010: ML Supply Chain Compromise / AML.T0012: Publish Poisoned Model",
+    "cwe_id": "CWE-1395",
+    "severity": "High",
+    "mapped_controls": {
+      "nist_csf_2_0": "GV.SC-01, PR.PS-06 (Supply Chain Risk Management & Software Integrity)",
+      "nist_sp_800_53_r5": "SR-3: Supply Chain Controls and Processes, SA-12: Supply Chain Security",
+      "iso_27001_2022": "A.5.19 (Supplier Relationships), A.5.23 (Information Security for Cloud Services)"
+    },
+    "self_assessment_question": "Are all third-party foundational AI base models, hosted LLM APIs, and open-source libraries vetted with signed SBOMs and supplier risk assessments?",
+    "evaluation_key": "has_cloud_vendor_vetting",
+    "remediation_spep": "Model Provenance Verification & Cryptographic Checksum Auditing"
+  },
+  {
+    "threat_id": "LLM04",
+    "threat_title": "Data and Model Poisoning",
+    "threat_source": "OWASP LLM (2025)",
+    "mitre_atlas_technique": "AML.T0024: Poison Training Data / AML.T0043: Craft Adversarial Data",
+    "cwe_id": "CWE-1400",
+    "severity": "High",
+    "mapped_controls": {
+      "nist_csf_2_0": "PR.DS-06, DE.CM-01 (Data Integrity & Continuous Anomaly Detection)",
+      "nist_sp_800_53_r5": "SI-7: Software, Firmware, and Information Integrity, AU-6: Audit Record Review",
+      "iso_27001_2022": "A.8.10 (Information Deletion), A.8.28 (Secure Coding Principles)"
+    },
+    "self_assessment_question": "Does the enterprise maintain cryptographic hash verification and strict tenant partition boundaries over fine-tuning datasets and vector embeddings?",
+    "evaluation_key": "has_secure_ai_pipeline",
+    "remediation_spep": "Vector Partition Isolation & Data Lineage Tracking"
+  },
+  {
+    "threat_id": "LLM05",
+    "threat_title": "Improper Output Handling (XSS / SQLi via Model)",
+    "threat_source": "OWASP LLM (2025)",
+    "mitre_atlas_technique": "AML.T0048: Insecure Direct Output Execution",
+    "cwe_id": "CWE-79",
+    "severity": "High",
+    "mapped_controls": {
+      "nist_csf_2_0": "PR.PS-02, PR.PS-05 (Platform & Application Security)",
+      "nist_sp_800_53_r5": "SI-10: Information Input Validation, AC-3: Access Enforcement",
+      "iso_27001_2022": "A.8.28 (Secure Coding), A.8.7 (Protection Against Malware)"
+    },
+    "self_assessment_question": "Are downstream SQL queries, browser render pipelines, and shell commands executed with parameterized inputs and context-aware escaping?",
+    "evaluation_key": "has_output_dlp",
+    "remediation_spep": "SPEP-04 (Capability Restriction & JSON Schema Enforcement)"
+  },
+  {
+    "threat_id": "LLM06",
+    "threat_title": "Excessive Agency & Unconstrained Tool Calling",
+    "threat_source": "OWASP LLM (2025)",
+    "mitre_atlas_technique": "AML.T0040: ML-Enabled Autonomous Execution / AML.T0015: Evade ML Model",
+    "cwe_id": "CWE-284",
+    "severity": "Critical",
+    "mapped_controls": {
+      "nist_csf_2_0": "PR.AA-01, PR.AA-02 (Identity Management, Authentication & Access Control)",
+      "nist_sp_800_53_r5": "AC-2: Account Management, AC-6: Least Privilege, IA-2: Identification & Authentication",
+      "iso_27001_2022": "A.5.15 (Access Control), A.8.2 (Privileged Access Rights)"
+    },
+    "self_assessment_question": "Does the autonomous agent architecture enforce least-privilege RBAC on tool invocation, with mandatory step-up human authorization for high-impact actions?",
+    "evaluation_key": "has_human_in_the_loop_for_tools",
+    "remediation_spep": "SPEP-05 (Execution Confirmation & Step-Up MFA Gate)"
+  },
+  {
+    "threat_id": "LLM07",
+    "threat_title": "System Prompt Leakage",
+    "threat_source": "OWASP LLM (2025)",
+    "mitre_atlas_technique": "AML.T0047: LLM System Prompt Extraction",
+    "cwe_id": "CWE-200",
+    "severity": "Medium",
+    "mapped_controls": {
+      "nist_csf_2_0": "PR.DS-01, PR.PS-01 (Data & System Configuration Protection)",
+      "nist_sp_800_53_r5": "AC-3: Access Enforcement, CM-6: Configuration Settings",
+      "iso_27001_2022": "A.5.1 (Information Security Policies), A.8.28 (Secure Coding)"
+    },
+    "self_assessment_question": "Are system prompts encapsulated behind strict system roles, with output filters designed to detect and block echoes of internal system directives?",
+    "evaluation_key": "has_prompt_firewall",
+    "remediation_spep": "SPEP-02 (Dual-Channel Instruction-Data Separation)"
+  },
+  {
+    "threat_id": "LLM08",
+    "threat_title": "Vector and Embedding Database Weaknesses",
+    "threat_source": "OWASP LLM (2025)",
+    "mitre_atlas_technique": "AML.T0031: Adversarial Query to Extract Vectors / AML.T0044: RAG Corruption",
+    "cwe_id": "CWE-311",
+    "severity": "Medium",
+    "mapped_controls": {
+      "nist_csf_2_0": "PR.DS-01, PR.AA-05 (Data Confidentiality & Access Control)",
+      "nist_sp_800_53_r5": "AC-3: Access Enforcement, SC-28: Protection of Information at Rest",
+      "iso_27001_2022": "A.8.24 (Use of Cryptography), A.5.15 (Access Control)"
+    },
+    "self_assessment_question": "Are vector embeddings stored with encryption-at-rest (KMS) and access-controlled per tenant identity during similarity search retrieval?",
+    "evaluation_key": "has_encryption_and_secrets_vault",
+    "remediation_spep": "Encrypted Vector Partitions & Metadata ACL Filtering"
+  },
+  {
+    "threat_id": "LLM09",
+    "threat_title": "Misinformation & Unbounded Hallucination",
+    "threat_source": "OWASP LLM (2025)",
+    "mitre_atlas_technique": "AML.T0042: Induce ML Misclassification / AML.T0018: Hallucination Induction",
+    "cwe_id": "CWE-699",
+    "severity": "Medium",
+    "mapped_controls": {
+      "nist_csf_2_0": "GV.RM-01, DE.CM-03 (Risk Management & Continuous Verification)",
+      "nist_sp_800_53_r5": "SI-7: Software and Information Integrity, AU-12: Audit Generation",
+      "iso_27001_2022": "A.5.8 (Information Security in Projects), A.8.8 (Vulnerability Management)"
+    },
+    "self_assessment_question": "Does the system employ multi-step grounded retrieval (RAG) with automated citation verification and confidence thresholding to prevent fabricated answers?",
+    "evaluation_key": "has_secure_ai_pipeline",
+    "remediation_spep": "8-Step Grounded RAG with Automated Citation Verification"
+  },
+  {
+    "threat_id": "LLM10",
+    "threat_title": "Unbounded Consumption & Model Denial of Service (DoS)",
+    "threat_source": "OWASP LLM (2025)",
+    "mitre_atlas_technique": "AML.T0029: ML Resource Denial of Service",
+    "cwe_id": "CWE-400",
+    "severity": "Medium",
+    "mapped_controls": {
+      "nist_csf_2_0": "PR.PS-04, DE.AE-02 (Capacity Management & Anomaly Detection)",
+      "nist_sp_800_53_r5": "SC-5: Denial-of-Service Protection, AU-6: Audit Monitoring",
+      "iso_27001_2022": "A.8.20 (Network Security), A.8.6 (Capacity Management)"
+    },
+    "self_assessment_question": "Are strict token rate limits, maximum completion caps, and compute quota telemetry alarms configured across all AI endpoints?",
+    "evaluation_key": "has_audit_logging_and_monitoring",
+    "remediation_spep": "Token Bucket Rate Limiting & SIEM Quota Monitoring"
+  }
+]
