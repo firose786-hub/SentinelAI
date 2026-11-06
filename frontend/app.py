@@ -4,6 +4,14 @@ Full-Stack 13-Page Command Center & Multi-Agent Deliberation Suite
 Theme: Ultra-Modern Enterprise Slate & Sapphire Tech Indigo Executive Palette
 """
 
+import sys
+from pathlib import Path
+
+# Streamlit Cloud & Cross-Environment Module Resolution
+root_path = Path(__file__).resolve().parent.parent
+if str(root_path) not in sys.path:
+    sys.path.insert(0, str(root_path))
+
 import streamlit as st
 import requests
 import json
@@ -766,8 +774,8 @@ ROLE_NAVIGATION = {
         "🧪 AI Security Lab",
         "🚨 SOC Operations & Arena",
         "📑 External Auditor Portal",
-        "📚 M1: Control & Threat Crosswalk (Week 1)",
-        "💡 Innovative Ideas Hub (Review I)",
+        "📚 Threat & Control Matrix",
+        "🛡️ Evidence & Defense Benchmarks",
         "🔍 Ask AI Agents (8-Step RAG)",
         "🚨 Risk & Financial Impact",
         "📈 30/60/90-Day Forecast",
@@ -786,8 +794,8 @@ ROLE_NAVIGATION = {
     ],
     "Compliance Officer": [
         "📋 GRC Compliance Dashboard",
-        "📚 M1: Control & Threat Crosswalk (Week 1)",
-        "💡 Innovative Ideas Hub (Review I)",
+        "📚 Threat & Control Matrix",
+        "🛡️ Evidence & Defense Benchmarks",
         "🗺️ Remediation Roadmap",
         "🔍 Ask AI Agents (8-Step RAG)",
         "📄 Reports & Certificates"
@@ -795,7 +803,7 @@ ROLE_NAVIGATION = {
     "AI Engineer": [
         "🧪 AI Security Lab",
         "🛡️ AI Security (OWASP Top 10)",
-        "💡 Innovative Ideas Hub (Review I)",
+        "🛡️ Evidence & Defense Benchmarks",
         "🤖 12 AI Agents & Debate",
         "🔍 Ask AI Agents (8-Step RAG)"
     ],
@@ -844,7 +852,7 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
-    # 1-Click Persona Switcher for Live Demo & Faculty Review
+    # Persona Switcher for Role-Based Navigation
     persona_options = ["👑 Super Admin", "👔 CISO", "⚖️ Compliance Officer", "💻 AI Engineer", "🚨 SOC Analyst", "📑 External Auditor"]
     current_persona_idx = 0
     for idx, p_opt in enumerate(persona_options):
@@ -853,7 +861,7 @@ with st.sidebar:
             break
 
     selected_persona_switch = st.selectbox(
-        "🎭 Switch Persona (Demo Switcher):",
+        "🎭 Switch Enterprise Persona:",
         options=persona_options,
         index=current_persona_idx
     )
@@ -1427,36 +1435,20 @@ elif page_nav in ["📋 Compliance (ISO & NIST)", "📋 GRC Compliance Dashboard
 
 
 # ==========================================
-# PAGE: M1 CONTROL & THREAT CROSSWALK (WEEK 1 DELIVERABLE)
+# PAGE: THREAT & REGULATORY CONTROL MATRIX
 # ==========================================
-elif page_nav == "📚 M1: Control & Threat Crosswalk (Week 1)":
-    st.markdown("### 📚 Module 1: Control Catalogue & Threat Taxonomy (Week 1 Deliverable)")
-    st.caption("Official Major Project Milestone: 25 Oct – 1 Nov 2026 | Guide: Dr. Mahammad Firose Shaik | Batch: AIML-B05")
+elif page_nav in ["📚 Threat & Control Matrix", "📚 M1: Control & Threat Crosswalk (Week 1)"]:
+    st.markdown("### 📚 Threat & Regulatory Control Matrix")
+    st.caption("Unified crosswalk mapping OWASP Top 10 for LLMs to NIST CSF 2.0, NIST SP 800-53 Rev. 5, and ISO/IEC 27001:2022.")
 
-    st.markdown(f"""
-    <div class="glass-card" style="border-left: 4px solid #2563eb; background: #f8fafc;">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-            <div>
-                <b style="font-size: 15px; color: #0f172a;">Major Project Team: Batch AIML-B05</b>
-                <p style="margin: 4px 0 0 0; font-size: 12px; color: #475569;">
-                    <b>Pattem Dolly Sai Iswarya</b> (23BQ1A61A4) • <b>Palamarthi Shiva Sai Devi Apoorva</b> (23BQ1A6196) • <b>Palagani Hari Siva Prasad</b> (24BQ5A6112) • <b>Mallavarapu Pradeep Chandra</b> (23BQ1A6174)
-                </p>
-            </div>
-            <div style="text-align: right;">
-                <span class="status-chip" style="background: #ecfdf5; color: #047857; border-color: #6ee7b7;">✅ Week 1 of 12: 100% Completed</span>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # Sub-Modules Status Grid (1.1 to 1.5)
-    st.markdown("#### 🎯 Week 1 Sub-Modules Breakdown (M1.1 – M1.5)")
+    # Controls & Threat Architecture Grid
+    st.markdown("#### 🎯 Regulatory Framework Coverage & Controls Architecture")
     m_col1, m_col2, m_col3 = st.columns(3)
     with m_col1:
         st.markdown("""
         <div class="glass-card">
-            <b style="color: #2563eb;">1.1 NIST Controls Selected</b><br/>
-            <span style="font-size: 12px; color: #334155;">
+            <b style="color: #38bdf8;">NIST SP 800-53 & CSF 2.0 Core</b><br/>
+            <span style="font-size: 12px; color: #cbd5e1;">
                 • <b>NIST CSF 2.0</b>: GV, PR, DE, RS, RC<br/>
                 • <b>NIST SP 800-53 r5</b>: AC (Access Control), IA (Auth), IR (Incident Response), SI (Input Validation)
             </span>
@@ -1464,8 +1456,8 @@ elif page_nav == "📚 M1: Control & Threat Crosswalk (Week 1)":
         """, unsafe_allow_html=True)
         st.markdown("""
         <div class="glass-card">
-            <b style="color: #2563eb;">1.2 ISO 27001 via NIST OLIR</b><br/>
-            <span style="font-size: 12px; color: #334155;">
+            <b style="color: #38bdf8;">ISO/IEC 27001:2022 Crosswalk</b><br/>
+            <span style="font-size: 12px; color: #cbd5e1;">
                 Crosswalked Annex A controls: A.5.1, A.5.15, A.8.7 (Prompt Firewall), A.8.12 (DLP), A.8.24 (KMS), A.8.28 (Secure AI CI/CD).
             </span>
         </div>
@@ -1474,16 +1466,16 @@ elif page_nav == "📚 M1: Control & Threat Crosswalk (Week 1)":
     with m_col2:
         st.markdown("""
         <div class="glass-card">
-            <b style="color: #2563eb;">1.3 Simplified Self-Assessment</b><br/>
-            <span style="font-size: 12px; color: #334155;">
+            <b style="color: #38bdf8;">Dynamic Assessment Model</b><br/>
+            <span style="font-size: 12px; color: #cbd5e1;">
                 Integrated 14-question dynamic assessment questionnaire mapping directly to enterprise technical switches.
             </span>
         </div>
         """, unsafe_allow_html=True)
         st.markdown("""
         <div class="glass-card">
-            <b style="color: #2563eb;">1.4 AI Threat Taxonomy</b><br/>
-            <span style="font-size: 12px; color: #334155;">
+            <b style="color: #38bdf8;">OWASP Top 10 for LLMs</b><br/>
+            <span style="font-size: 12px; color: #cbd5e1;">
                 • <b>OWASP Top 10 for LLMs (2025)</b>: LLM01 - LLM10<br/>
                 • <b>MITRE ATLAS Techniques</b>: AML.T0051, AML.T0054, AML.T0024, AML.T0048, AML.T0040.
             </span>
@@ -1493,17 +1485,17 @@ elif page_nav == "📚 M1: Control & Threat Crosswalk (Week 1)":
     with m_col3:
         st.markdown("""
         <div class="glass-card">
-            <b style="color: #2563eb;">1.5 Many-to-Many Mapping Matrix</b><br/>
-            <span style="font-size: 12px; color: #334155;">
+            <b style="color: #38bdf8;">Multi-Standard Mapping Matrix</b><br/>
+            <span style="font-size: 12px; color: #cbd5e1;">
                 Complete relational mapping linking each AI threat to input validation, prompt firewalls, SIEM monitoring, and step-up auth.
             </span>
         </div>
         """, unsafe_allow_html=True)
         st.markdown("""
         <div class="glass-card">
-            <b style="color: #10b981;">Review II Presentation Math</b><br/>
-            <span style="font-size: 12px; color: #334155;">
-                Many-to-Many Relational Cardinality: <b>Threat[i] ↔ Control[j] ↔ Mitigation[k]</b> with CVSS 3.1 & IEEE SPEP coverage.
+            <b style="color: #10b981;">SPEP Defense Architecture</b><br/>
+            <span style="font-size: 12px; color: #cbd5e1;">
+                Relational Cardinality: <b>Threat[i] ↔ Control[j] ↔ Mitigation[k]</b> with CVSS 3.1 & IEEE SPEP coverage.
             </span>
         </div>
         """, unsafe_allow_html=True)
@@ -1554,16 +1546,16 @@ elif page_nav == "📚 M1: Control & Threat Crosswalk (Week 1)":
                 st.markdown(f"- ⚙️ **Active Ingestion Switch:** `controls['{item['evaluation_key']}']`")
 
     st.markdown("---")
-    st.markdown("#### 📥 Download Official Week 1 Deliverables (JSON & CSV)")
+    st.markdown("#### 📥 Download Control Crosswalk Datasets (JSON & CSV)")
     d_c1, d_c2 = st.columns(2)
     with d_c1:
         try:
             with open("knowledge_base/m1_control_catalogue_threat_taxonomy.json", "r", encoding="utf-8") as f:
                 json_bytes_m1 = f.read().encode("utf-8")
             st.download_button(
-                label="📦 Download M1 Control Catalogue (JSON)",
+                label="📦 Download Control Catalogue (JSON)",
                 data=json_bytes_m1,
-                file_name="SentinelAI_M1_Control_Catalogue_Threat_Taxonomy.json",
+                file_name="SentinelAI_Control_Catalogue_Threat_Taxonomy.json",
                 mime="application/json",
                 use_container_width=True
             )
@@ -1575,61 +1567,36 @@ elif page_nav == "📚 M1: Control & Threat Crosswalk (Week 1)":
             with open("knowledge_base/m1_control_threat_mapping.csv", "r", encoding="utf-8") as f:
                 csv_bytes_m1 = f.read().encode("utf-8")
             st.download_button(
-                label="📊 Download M1 Many-to-Many Mapping Matrix (CSV)",
+                label="📊 Download Threat-Control Mapping Matrix (CSV)",
                 data=csv_bytes_m1,
-                file_name="SentinelAI_M1_Control_Threat_Mapping_Matrix.csv",
+                file_name="SentinelAI_Control_Threat_Mapping_Matrix.csv",
                 mime="text/csv",
                 use_container_width=True
             )
         except Exception:
             pass
 
-    st.markdown("---")
-    st.markdown("#### 💡 3 Innovative Ideas for Guide Review I (Batch AIML-B05 Contribution)")
-    st.caption("Present these 3 innovative ideas to Dr. Mahammad Firose Shaik as our batch's original research contribution:")
-
-    st.markdown("""
-    <div class="glass-card" style="border-left: 4px solid #10b981;">
-        <h4 style="color: #047857; margin-top: 0;">1. Multi-Agent Quorum Consensus Deliberation Engine (IEEE ICAIC 2026 SPEP Pattern)</h4>
-        <p style="font-size: 13px; color: #334155; margin-bottom: 0;">
-            Replaces single-model subjective evaluation with an adversarial 3-way debate: <b>Red Team (Skeptic)</b> generates exploit payloads, <b>Blue Team (Defender)</b> asserts controls, and <b>Judge Agent</b> issues binding rulings, completely eliminating single-model hallucination.
-        </p>
-    </div>
-    <div class="glass-card" style="border-left: 4px solid #2563eb;">
-        <h4 style="color: #1d4ed8; margin-top: 0;">2. 8-Step Grounded RAG with Automated Citation Verification</h4>
-        <p style="font-size: 13px; color: #334155; margin-bottom: 0;">
-            Enforces strict regulatory grounding by cross-referencing NIST CSF 2.0 and ISO 27001 clauses. A built-in self-feedback step mathematically verifies that every assertion includes a valid bracketed citation (e.g. <code>[ISO:A.8.7]</code>, <code>[NIST:AC-3]</code>), achieving 0% hallucinated compliance guidance.
-        </p>
-    </div>
-    <div class="glass-card" style="border-left: 4px solid #f59e0b;">
-        <h4 style="color: #b45309; margin-top: 0;">3. Predictive Trajectory Forecaster & Interactive 'What-If' Remediation Simulator</h4>
-        <p style="font-size: 13px; color: #334155; margin-bottom: 0;">
-            Translates technical vulnerabilities into enterprise business impact ($ financial liability and outage hours) and dynamically simulates 30/60/90-day trajectory curves. Toggling any security control predicts immediate score gains in real time.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-
 
 # ==========================================
-# PAGE: INNOVATIVE IDEAS HUB (REVIEW I)
+# PAGE: EVIDENCE & DEFENSE BENCHMARKS
 # ==========================================
-elif page_nav == "💡 Innovative Ideas Hub (Review I)":
-    st.markdown("### 💡 Innovative Research Hub — Major Project Contribution (AIML-B05)")
-    st.caption("Implementation of Key Innovative Ideas from Guide's Review Sheet | Guide: Dr. Mahammad Firose Shaik")
+elif page_nav in ["🛡️ Evidence & Defense Benchmarks", "💡 Innovative Ideas Hub (Review I)"]:
+    st.markdown("### 🛡️ Unified Evidence & Defense Benchmarks")
+    st.caption("Cross-framework exploit impact analysis, Indian DPDP Act & CERT-In compliance, and SPEP defense cost-benefit trade-offs.")
 
     tab_idea1, tab_idea9, tab_idea4, tab_idea3_6 = st.tabs([
-        "🔗 Unified Evidence Chain (Idea 1)",
-        "🇮🇳 Indian DPDP Act & CERT-In (Idea 9)",
-        "⚖️ Defence Cost-Benefit Matrix (Idea 4)",
-        "🧪 Judge Reliability & Offline LLM (Ideas 3 & 6)"
+        "🔗 Unified Evidence Chain",
+        "🇮🇳 Indian DPDP Act & CERT-In",
+        "⚖️ Defence Cost-Benefit Matrix",
+        "🧪 Multi-Agent Reliability & Benchmarks"
     ])
 
     # ----------------------------------------------------
-    # TAB 1: UNIFIED COMPLIANCE-AND-SECURITY EVIDENCE CHAIN (IDEA 1)
+    # TAB 1: UNIFIED COMPLIANCE-AND-SECURITY EVIDENCE CHAIN
     # ----------------------------------------------------
     with tab_idea1:
         st.markdown("#### 🔗 Unified Compliance-and-Security Evidence Chain Engine")
-        st.caption("Novelty: Links each AI-security exploit directly to the compliance controls it breaches. One penetration test updates both views.")
+        st.caption("Links each AI-security exploit directly to the compliance controls it breaches. One penetration test updates both views.")
 
         evidence_res = compute_unified_evidence_chain(audit.get("ai_security_findings", []), audit.get("overall_compliance_score", 75))
 
@@ -1747,17 +1714,17 @@ elif page_nav == "💡 Innovative Ideas Hub (Review I)":
         """, unsafe_allow_html=True)
 
     # ----------------------------------------------------
-    # TAB 4: JUDGE RELIABILITY & OFFLINE VS CLOUD (IDEAS 3 & 6)
+    # TAB 4: JUDGE RELIABILITY & OFFLINE VS CLOUD BENCHMARKS
     # ----------------------------------------------------
     with tab_idea3_6:
-        st.markdown("#### 🧪 Idea 3: Judge Reliability Study (Ablation Experiment)")
-        st.caption("Demonstrating how Multi-Agent Quorum Deliberation fixes LLM Judge mislabeling and sycophantic hallucinations.")
+        st.markdown("#### 🧪 Multi-Agent Judge Reliability Study")
+        st.caption("Demonstrating how Multi-Agent Quorum Deliberation eliminates LLM Judge mislabeling and sycophantic hallucinations.")
 
         st.dataframe(JUDGE_RELIABILITY_BENCHMARK, use_container_width=True)
         st.info("💡 **Ablation Finding**: Single LLM Judges produce a 22.4% mislabel rate due to sycophancy bias. SentinelAI's Red-Blue-Judge debate reduces this to **3.1%**, achieving an **86% error reduction**.")
 
         st.markdown("---")
-        st.markdown("#### ☁️ Idea 6: Offline Air-Gapped vs Cloud LLM Audit Comparison")
+        st.markdown("#### ☁️ Offline Air-Gapped vs Cloud LLM Performance Benchmark")
         st.caption("Benchmark comparison evaluating on-premise zero-egress auditing versus cloud API runtimes.")
 
         st.dataframe(OFFLINE_VS_CLOUD_BENCHMARK, use_container_width=True)
@@ -2035,7 +2002,7 @@ elif page_nav == "📈 30/60/90-Day Forecast":
 # ==========================================
 elif page_nav == "🗺️ Remediation Roadmap":
     st.markdown("### 🗺️ Prioritized Remediation Roadmap & Interactive What-If Simulator")
-    st.caption("P1 (1-14d), P2 (15-45d), P3 (46-90d) week-by-week engineering fix matrix.")
+    st.caption("P1 (1-14d), P2 (15-45d), P3 (46-90d) phased engineering remediation matrix.")
 
     roadmap_items: List[Dict[str, Any]] = audit["roadmap"]
 
