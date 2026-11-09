@@ -1756,8 +1756,6 @@ elif page_nav in ["🧪 AI Security Lab & Testbed", "🧪 AI Security Lab"]:
             st.success(f"✅ Confinement Enforced: {conf_msg}")
         else:
             st.error(f"🛑 Security Boundary Alert: {conf_msg}")
-        else:
-            st.error(f"🛑 Security Boundary Alert: {conf_msg}")
 
 
 # ==========================================
