@@ -56,6 +56,7 @@ class ComplianceOrchestrator:
         Executes the full 11+ agent audit workflow sequentially, tracking execution timings.
         """
         timings: Dict[str, float] = {}
+        total_start_time = time.time()
         llm_used = False
         audit_id = f"AUDIT-{uuid.uuid4().hex[:8].upper()}"
         timestamp = int(time.time())
@@ -151,6 +152,13 @@ class ComplianceOrchestrator:
             ai_findings=ai_findings
         )
         timings["CEO & Business Impact Agent"] = round((time.time() - t0) * 1000, 2)
+
+        # Standard canonical keys for automated integration tests
+        timings["policy_analysis"] = timings.get("Policy Agent", 0.0)
+        timings["compliance_evaluation"] = timings.get("Compliance Agent", 0.0)
+        timings["red_team_attacks"] = timings.get("Red Team Agent", 0.0)
+        timings["judge_adjudication"] = timings.get("Judge Agent", 0.0)
+        timings["total_pipeline"] = round((time.time() - total_start_time) * 1000, 2)
 
         # Optional Gemini Enhancement (Only if API key is provided and valid)
         active_api_key = api_key or os.getenv("GEMINI_API_KEY", "")

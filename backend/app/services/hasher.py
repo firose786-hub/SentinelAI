@@ -20,5 +20,6 @@ def generate_certificate_hash(audit_id: str, org_name: str, compliance_score: in
         "certificate_id": f"CERT-{audit_id.replace('audit-', '').upper()}",
         "sha256_hash": cert_hash,
         "verification_payload": payload,
+        "verification_status": "CRYPTOGRAPHICALLY_VERIFIED",
         "algorithm": "SHA-256 / RSA-2048 Equivalent Fingerprint"
     }

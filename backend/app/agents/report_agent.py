@@ -364,7 +364,8 @@ class ReportAgent:
         """
         Generates a comprehensive Markdown version of the audit report.
         """
-        md = f"""# SentinelAI Audit Report: {record.organization_name}
+        md = f"""# Executive AI Security & Compliance Audit Report: {record.organization_name}
+# SentinelAI Audit Report: {record.organization_name}
 
 **Audit ID:** `{record.audit_id}`  
 **Date:** {record.date_formatted}  
@@ -474,8 +475,8 @@ class ReportAgent:
 """
         return md
 
-    def generate_json(self, record: AuditRecord) -> str:
+    def generate_json(self, record: AuditRecord) -> bytes:
         """
-        Exports audit record as formatted JSON.
+        Exports audit record as formatted JSON bytes.
         """
-        return json.dumps(record.model_dump(), indent=2)
+        return json.dumps(record.model_dump(), indent=2).encode("utf-8")

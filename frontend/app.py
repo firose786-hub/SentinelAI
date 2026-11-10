@@ -2191,6 +2191,7 @@ elif page_nav == "🤖 12 AI Agents & Debate":
         speaker = turn["speaker"]
         arg = turn["argument"]
         points = turn.get("key_points", [])
+        pts_html = "".join([f"<li style='color: #cbd5e1;'>{p}</li>" for p in points])
 
         if "Red" in speaker:
             cls = "debate-red"
@@ -2212,7 +2213,7 @@ elif page_nav == "🤖 12 AI Agents & Debate":
             <div style="font-size: 12px; margin-top: 8px; color: #94a3b8;">
                 <b style="color: #ffffff;">Core Arguments:</b>
                 <ul style="margin-top: 4px;">
-                    {''.join([f'<li style=\"color: #cbd5e1;\">{p}</li>' for p in points])}
+                    {pts_html}
                 </ul>
             </div>
         </div>
@@ -2358,6 +2359,8 @@ elif page_nav == "🚨 Risk & Financial Impact":
     r_col3.metric("Financial Exposure Range", b_impact.get("financial_range_display", "$5M - $12M USD"), delta="Revenue-Scaled Liability", delta_color="inverse")
 
     st.markdown("---")
+    b_impact_areas = b_impact.get('primary_impact_areas', [])
+    areas_html = "".join([f"<li style='color: #cbd5e1; margin-bottom: 4px;'>{area}</li>" for area in b_impact_areas])
     st.markdown(f"""
     <div class="glass-card">
         <h4 style="color: #ffffff; margin-top: 0; font-size: 16px;">💼 Business Impact Narrative</h4>
@@ -2367,7 +2370,7 @@ elif page_nav == "🚨 Risk & Financial Impact":
         <div style="margin-top: 14px;">
             <b style="color: #ffffff;">Primary Impact Areas:</b>
             <ul style="margin-top: 6px;">
-                {''.join([f'<li style="color: #cbd5e1; margin-bottom: 4px;">{area}</li>' for area in b_impact.get('primary_impact_areas', [])])}
+                {areas_html}
             </ul>
         </div>
     </div>
@@ -2419,6 +2422,7 @@ elif page_nav == "📈 30/60/90-Day Forecast":
 
     col_m1, col_m2, col_m3 = st.columns(3)
     for idx, (col_m, m) in enumerate(zip([col_m1, col_m2, col_m3], milestones)):
+        m_imps = "".join([f"<li style='color: #cbd5e1;'>{imp}</li>" for imp in m.get('projected_improvements', [])])
         with col_m:
             st.markdown(f"""
             <div class="glass-card">
@@ -2428,7 +2432,7 @@ elif page_nav == "📈 30/60/90-Day Forecast":
                 <div style="font-size: 12px; color: #cbd5e1;">
                     <b style="color: #ffffff;">Projected Improvements:</b>
                     <ul style="margin-top: 4px;">
-                        {''.join([f'<li style=\"color: #cbd5e1;\">{imp}</li>' for imp in m['projected_improvements']])}
+                        {m_imps}
                     </ul>
                 </div>
             </div>
@@ -2720,6 +2724,7 @@ elif page_nav == "🚨 SOC Operations & Arena":
         speaker = turn["speaker"]
         arg = turn["argument"]
         points = turn.get("key_points", [])
+        pts_obs = "".join([f"<li>{p}</li>" for p in points])
         if "Red" in speaker:
             cls, icon, title_color = "debate-red", "🔴", "#ef4444"
         elif "Blue" in speaker:
@@ -2734,7 +2739,7 @@ elif page_nav == "🚨 SOC Operations & Arena":
             <div style="font-size: 12px; margin-top: 8px; color: #94a3b8;">
                 <b>Core Observations:</b>
                 <ul style="margin-top: 4px;">
-                    {''.join([f'<li>{p}</li>' for p in points])}
+                    {pts_obs}
                 </ul>
             </div>
         </div>

@@ -9,8 +9,35 @@ from ..config import GEMINI_API_KEY, GEMINI_MODEL
 class SemanticAIAgent:
     """Milestone 2 & 3 — Real-Time Semantic AI Code Inspector."""
 
-    def __init__(self):
+    def __init__(self, api_key: Optional[str] = None):
         self.name = "Semantic AI Inspector"
+        self.api_key = api_key if api_key is not None else (GEMINI_API_KEY or os.getenv("GEMINI_API_KEY", ""))
+        self.is_configured = bool(self.api_key and self.api_key.strip())
+
+    def evaluate_adversarial_prompt(self, prompt: str, context: str = "") -> Dict[str, Any]:
+        """Evaluates adversarial prompt injection with deterministic fallback."""
+        low_p = prompt.lower()
+        adversarial_indicators = [
+            "system override", "ignore all", "bypass", "reveal database",
+            "dan mode", "unrestricted", "admin persona", "dump credentials"
+        ]
+        is_adv = any(ind in low_p for ind in adversarial_indicators)
+        return {
+            "mode": "deterministic_offline_rule_engine",
+            "is_adversarial": is_adv,
+            "confidence": 0.95 if is_adv else 0.85,
+            "remediation": "Deploy SPEP-01 contextual sanitization filter and dual-channel prompt firewall.",
+            "context": context
+        }
+
+    def interpret_compliance_gap(self, standard: str, control_id: str, gap_description: str) -> Dict[str, Any]:
+        """Generates Plain English compliance gap interpretations."""
+        return {
+            "mode": "deterministic_offline_rule_engine",
+            "standard": standard,
+            "control_id": control_id,
+            "summary": f"Automated Plain English interpretation for {standard} {control_id}: {gap_description}"
+        }
 
     def analyze_deep(
         self,

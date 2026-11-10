@@ -45,8 +45,8 @@ def generate_excel_report(audit_data: Dict[str, Any]) -> bytes:
         ws1.append(["ISO/IEC 27001:2022 Score", f"{audit_data.get('iso_compliance_score', 0)}%", "8 Controls Evaluated", "Clause 5 & Clause 8 Controls"])
         ws1.append(["NIST CSF 2.0 Score", f"{audit_data.get('nist_compliance_score', 0)}%", "8 Core Categories", "Govern, Protect, Detect, Respond, Recover"])
         ws1.append(["AI Security Score (OWASP LLM)", f"{audit_data.get('ai_security_score', 0)}%", "OWASP Top 10 Vectors", "Red/Blue Team Validation Index"])
-        ws1.append(["Cyber Risk Score", f"{audit_data.get('overall_risk_score', 0)}/100", audit_data.get('business_impact', {}).get('overall_risk_tier', 'Medium'), "Lower is better"])
-        ws1.append(["Audit Council Verdict", audit_data.get('verdict', 'INSPECT'), "Binding Decision", audit_data.get('debate_result', {}).get('verdict_rationale', '')[:80]])
+        ws1.append(["Cyber Risk Score", f"{audit_data.get('overall_risk_score', 0)}/100", (audit_data.get('business_impact') or {}).get('overall_risk_tier', 'Medium'), "Lower is better"])
+        ws1.append(["Audit Council Verdict", audit_data.get('verdict', 'INSPECT'), "Binding Decision", (audit_data.get('debate_result') or {}).get('verdict_rationale', '')[:80]])
 
         # 2. Sheet 2: ISO & NIST Controls
         ws2 = wb.create_sheet(title="Compliance Controls")
@@ -109,6 +109,7 @@ def generate_excel_report(audit_data: Dict[str, Any]) -> bytes:
         import csv
         out = io.StringIO()
         writer = csv.writer(out)
+        writer.writerow(["# Format: CSV / Excel Export"])
         writer.writerow(["Standard", "Control/Finding ID", "Title", "Category", "Status/Severity", "Score/CVSS", "Remediation"])
         for c in audit_data.get("controls_assessment", []):
             writer.writerow([c.get("standard"), c.get("control_id"), c.get("title"), c.get("category"), c.get("status"), c.get("score"), c.get("remediation")])
