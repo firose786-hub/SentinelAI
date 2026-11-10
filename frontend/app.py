@@ -33,7 +33,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for World-Class Cyber Defense Command Center (Obsidian Falcon Glass Theme)
+# Custom CSS for World-Class Cyber Defense Command Center (Clean Slate High-Contrast Theme)
 st.markdown("""
 <style>
     /* Global Typography & Palette */
@@ -41,15 +41,46 @@ st.markdown("""
 
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        color: #f8fafc;
+        color: #f1f5f9;
     }
     
     .stApp {
-        background: radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
-                    radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
-                    radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%),
-                    #080c16;
-        color: #f8fafc;
+        background: #0d1117;
+        color: #f1f5f9;
+    }
+
+    /* Enforce High Readability on All Sentences & Paragraphs */
+    h1, h2, h3, h4, h5, h6, strong, b {
+        color: #ffffff !important;
+    }
+    p, span, label, div {
+        color: #e2e8f0;
+    }
+    .stMarkdown, .stMarkdown p {
+        color: #e2e8f0 !important;
+    }
+    .stCaption, caption {
+        color: #94a3b8 !important;
+    }
+
+    /* Streamlit Expander High-Contrast */
+    div[data-testid="stExpander"] {
+        background: #161b22 !important;
+        border: 1px solid #30363d !important;
+        border-radius: 8px !important;
+    }
+    div[data-testid="stExpander"] details summary {
+        color: #ffffff !important;
+        font-weight: 600 !important;
+    }
+    div[data-testid="stExpander"] details summary:hover {
+        color: #38bdf8 !important;
+    }
+
+    /* Streamlit Form Widgets / Inputs */
+    label[data-testid="stWidgetLabel"] p {
+        color: #f1f5f9 !important;
+        font-weight: 600 !important;
     }
 
     /* Main Container Padding */
@@ -78,36 +109,25 @@ st.markdown("""
 
     /* Top Command Hero Header */
     .hero-banner {
-        background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.8) 50%, rgba(15, 23, 42, 0.95) 100%);
-        border: 1px solid rgba(56, 189, 248, 0.25);
-        border-radius: 16px;
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 14px;
         padding: 24px 28px;
         margin-bottom: 24px;
-        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 25px rgba(56, 189, 248, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         color: #ffffff;
         position: relative;
         overflow: hidden;
     }
-    .hero-banner::after {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -10%;
-        width: 350px;
-        height: 350px;
-        background: radial-gradient(circle, rgba(56, 189, 248, 0.18) 0%, rgba(99, 102, 241, 0) 70%);
-        pointer-events: none;
-    }
 
     /* Modern Enterprise KPI Metric Cards */
     .kpi-card {
-        background: rgba(15, 23, 42, 0.75);
-        backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 14px;
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 12px;
         padding: 18px 14px;
         text-align: center;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
         transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         overflow: hidden;
@@ -123,9 +143,8 @@ st.markdown("""
         box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
     }
     .kpi-card:hover {
-        border-color: rgba(56, 189, 248, 0.45);
-        transform: translateY(-3px);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.2);
+        border-color: #58a6ff;
+        transform: translateY(-2px);
     }
     .kpi-value {
         font-size: 26px;
@@ -143,7 +162,7 @@ st.markdown("""
     }
     .kpi-sub {
         font-size: 12px;
-        color: #64748b;
+        color: #cbd5e1;
         font-weight: 500;
     }
 
@@ -232,31 +251,30 @@ st.markdown("""
         box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
     }
 
-    /* Clean Enterprise Cards (Glassmorphism Dark Theme) */
+    /* Clean Enterprise Cards (High-Contrast Slate Theme) */
     .glass-card {
-        background: rgba(15, 23, 42, 0.75);
-        backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 14px;
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 12px;
         padding: 22px;
         margin-bottom: 16px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        color: #f8fafc;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        color: #f1f5f9;
         transition: border-color 0.2s ease, transform 0.2s ease;
     }
     .glass-card:hover {
-        border-color: rgba(56, 189, 248, 0.35);
+        border-color: #58a6ff;
     }
     .glass-card h1, .glass-card h2, .glass-card h3, .glass-card h4, .glass-card b, .glass-card strong {
-        color: #f8fafc !important;
+        color: #ffffff !important;
     }
     .glass-card p, .glass-card span, .glass-card div, .glass-card li {
-        color: #cbd5e1;
+        color: #e2e8f0 !important;
     }
     .glass-card code {
-        background: rgba(8, 12, 22, 0.9) !important;
-        color: #38bdf8 !important;
-        border: 1px solid rgba(56, 189, 248, 0.25) !important;
+        background: #0d1117 !important;
+        color: #58a6ff !important;
+        border: 1px solid #30363d !important;
         padding: 2px 6px !important;
         border-radius: 4px !important;
     }
@@ -266,28 +284,28 @@ st.markdown("""
         padding: 18px 22px;
         border-radius: 12px;
         margin-bottom: 14px;
-        background: rgba(15, 23, 42, 0.8);
+        background: #161b22;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        color: #f8fafc;
+        border: 1px solid #30363d;
+        color: #f1f5f9;
     }
     .debate-card p {
-        color: #cbd5e1 !important;
+        color: #e2e8f0 !important;
     }
     .debate-card li {
-        color: #94a3b8 !important;
+        color: #cbd5e1 !important;
     }
     .debate-red {
         border-left: 5px solid #ef4444;
-        background: linear-gradient(90deg, rgba(239, 68, 68, 0.12) 0%, rgba(15, 23, 42, 0.85) 45%);
+        background: #1c151b;
     }
     .debate-blue {
-        border-left: 5px solid #0284c7;
-        background: linear-gradient(90deg, rgba(2, 132, 199, 0.12) 0%, rgba(15, 23, 42, 0.85) 45%);
+        border-left: 5px solid #38bdf8;
+        background: #131c2a;
     }
     .debate-judge {
         border-left: 5px solid #10b981;
-        background: linear-gradient(90deg, rgba(16, 185, 129, 0.12) 0%, rgba(15, 23, 42, 0.85) 45%);
+        background: #12211d;
     }
 
     /* Executive Certificate Frame */
@@ -953,15 +971,15 @@ with st.sidebar:
 
     # Active User Profile Card
     st.markdown(f"""
-    <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 14px; margin-bottom: 14px; box-shadow: 0 4px 14px rgba(0,0,0,0.3);">
-        <div style="font-size: 10px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">AUTHENTICATED ENCLAVE</div>
+    <div style="background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 14px; margin-bottom: 14px; box-shadow: 0 4px 14px rgba(0,0,0,0.3);">
+        <div style="font-size: 10px; color: #8b949e; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">AUTHENTICATED ENCLAVE</div>
         <div style="font-size: 14px; font-weight: 800; color: #ffffff; margin-top: 3px;">{current_fullname}</div>
         <div style="margin-top: 4px;">
             <span class="status-chip" style="font-size: 10px; color: {role_color}; border-color: {role_color}55;">
                 <span class="live-pulse-dot" style="background: {role_color};"></span>{current_role.upper()}
             </span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 5px;">User: @{current_username}</div>
+        <div style="font-size: 11px; color: #8b949e; margin-top: 5px;">User: @{current_username}</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -1381,12 +1399,12 @@ elif page_nav in ["📊 Dashboard", "👔 CISO Executive Dashboard"]:
     st.markdown("---")
     ceo = audit.get("ceo_summary", {})
     st.markdown(f"""
-    <div class="glass-card" style="border-left: 4px solid #4f46e5;">
+    <div class="glass-card" style="border-left: 4px solid #818cf8;">
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
             <span style="font-size: 20px;">👔</span>
-            <h4 style="color: #1e1b4b; margin: 0; font-weight: 700;">Executive Headline: {ceo.get('headline')}</h4>
+            <h4 style="color: #ffffff; margin: 0; font-weight: 700;">Executive Headline: {ceo.get('headline')}</h4>
         </div>
-        <p style="font-size: 14px; color: #334155; line-height: 1.6; margin-bottom: 0;">
+        <p style="font-size: 14px; color: #e2e8f0; line-height: 1.6; margin-bottom: 0;">
             {ceo.get('risk_summary_plain_english')}
         </p>
     </div>
@@ -2019,8 +2037,8 @@ elif page_nav == "🛡️ Evidence & Defense Benchmarks":
                             <b>{item['section_id']}: {item['title']}</b>
                             <div>{badge}</div>
                         </div>
-                        <p style="font-size: 12px; color: #475569; margin: 4px 0;">{item['description']}</p>
-                        <div style="font-size: 11px; color: #2563eb;"><b>AI Mandate:</b> {item['ai_implications']}</div>
+                        <p style="font-size: 12px; color: #cbd5e1; margin: 4px 0;">{item['description']}</p>
+                        <div style="font-size: 11px; color: #38bdf8;"><b>AI Mandate:</b> {item['ai_implications']}</div>
                     </div>
                     """, unsafe_allow_html=True)
             except Exception as e:
@@ -2041,8 +2059,8 @@ elif page_nav == "🛡️ Evidence & Defense Benchmarks":
                             <b>{item['direction_id']}: {item['title']}</b>
                             <div>{badge}</div>
                         </div>
-                        <p style="font-size: 12px; color: #475569; margin: 4px 0;">{item['description']}</p>
-                        <div style="font-size: 11px; color: #d97706;"><b>Cyber Directive:</b> {item['ai_implications']}</div>
+                        <p style="font-size: 12px; color: #cbd5e1; margin: 4px 0;">{item['description']}</p>
+                        <div style="font-size: 11px; color: #fbbf24;"><b>Cyber Directive:</b> {item['ai_implications']}</div>
                     </div>
                     """, unsafe_allow_html=True)
             except Exception as e:
@@ -2070,8 +2088,8 @@ elif page_nav == "🛡️ Evidence & Defense Benchmarks":
         st.dataframe(df_cb, use_container_width=True)
 
         st.markdown("""
-        <div class="glass-card" style="background: #f8fafc; border-left: 4px solid #4f46e5;">
-            <b>Key Engineering Takeaway:</b> Combining <b>SPEP-01 (Sanitization)</b> with <b>SPEP-03 (Multi-Agent Quorum)</b> reduces overall LLM agent exploitability from <b>80% down to 7%</b> (91.3% reduction) with a negligible latency overhead of only <b>+42ms</b>.
+        <div class="glass-card" style="border-left: 4px solid #818cf8;">
+            <b style="color: #ffffff;">Key Engineering Takeaway:</b> Combining <b style="color: #38bdf8;">SPEP-01 (Sanitization)</b> with <b style="color: #38bdf8;">SPEP-03 (Multi-Agent Quorum)</b> reduces overall LLM agent exploitability from <b>80% down to 7%</b> (91.3% reduction) with a negligible latency overhead of only <b>+42ms</b>.
         </div>
         """, unsafe_allow_html=True)
 
@@ -2121,8 +2139,8 @@ elif page_nav == "🛡️ AI Security (OWASP Top 10)":
             st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
 
             st.markdown(f"""
-            <div style="background: #f8fafc; padding: 14px; border-radius: 8px; font-family: monospace; font-size: 12px; color: #0f172a; margin-bottom: 12px; border: 1px solid #e2e8f0;">
-                <b style="color: #64748b;">SIMULATED ADVERSARIAL PAYLOAD:</b><br/>{f['simulated_payload']}
+            <div style="background: #161b22; padding: 14px; border-radius: 8px; font-family: monospace; font-size: 12px; color: #f1f5f9; margin-bottom: 12px; border: 1px solid #30363d;">
+                <b style="color: #38bdf8;">SIMULATED ADVERSARIAL PAYLOAD:</b><br/>{f['simulated_payload']}
             </div>
             """, unsafe_allow_html=True)
 
@@ -2130,23 +2148,23 @@ elif page_nav == "🛡️ AI Security (OWASP Top 10)":
             with c_red:
                 st.markdown(f"""
                 <div class="debate-card debate-red">
-                    <b style="color: #b91c1c;">🔴 Red Team Observation:</b><br/>
-                    <span style="font-size: 13px; color: #475569;">{f['red_team_observation']}</span>
+                    <b style="color: #f87171;">🔴 Red Team Observation:</b><br/>
+                    <span style="font-size: 13px; color: #e2e8f0;">{f['red_team_observation']}</span>
                 </div>
                 """, unsafe_allow_html=True)
 
             with c_blue:
                 st.markdown(f"""
                 <div class="debate-card debate-blue">
-                    <b style="color: #0369a1;">🔵 Blue Team Defense:</b><br/>
-                    <span style="font-size: 13px; color: #475569;">{f['blue_team_defense']}</span>
+                    <b style="color: #38bdf8;">🔵 Blue Team Defense:</b><br/>
+                    <span style="font-size: 13px; color: #e2e8f0;">{f['blue_team_defense']}</span>
                 </div>
                 """, unsafe_allow_html=True)
 
             st.markdown(f"""
             <div class="debate-card debate-judge">
-                <b style="color: #15803d;">⚖️ Judge Ruling:</b> {f['judge_verdict']}<br/>
-                <span style="font-size: 13px; color: #334155;"><b>Recommended Mitigation:</b> {f['remediation_guidance']}</span>
+                <b style="color: #34d399;">⚖️ Judge Ruling:</b> {f['judge_verdict']}<br/>
+                <span style="font-size: 13px; color: #e2e8f0;"><b>Recommended Mitigation:</b> {f['remediation_guidance']}</span>
             </div>
             """, unsafe_allow_html=True)
 
@@ -2161,10 +2179,10 @@ elif page_nav == "🤖 12 AI Agents & Debate":
     debate: Dict[str, Any] = audit["debate_result"]
 
     st.markdown(f"""
-    <div class="glass-card" style="border-left: 4px solid #4f46e5;">
-        <h4 style="margin: 0; color: #1e1b4b; font-size: 16px;">Debate Topic: {debate['debate_topic']}</h4>
-        <p style="margin: 6px 0 0 0; color: #64748b; font-size: 13px;">
-            Arbiter Confidence: <b style="color: #0f172a;">{int(debate['decision_confidence'] * 100)}%</b> &nbsp;|&nbsp; Verdict: <b style="color: #4f46e5;">{debate['verdict']}</b>
+    <div class="glass-card" style="border-left: 4px solid #818cf8;">
+        <h4 style="margin: 0; color: #ffffff; font-size: 16px;">Debate Topic: {debate['debate_topic']}</h4>
+        <p style="margin: 6px 0 0 0; color: #94a3b8; font-size: 13px;">
+            Arbiter Confidence: <b style="color: #34d399;">{int(debate['decision_confidence'] * 100)}%</b> &nbsp;|&nbsp; Verdict: <b style="color: #38bdf8;">{debate['verdict']}</b>
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -2177,33 +2195,33 @@ elif page_nav == "🤖 12 AI Agents & Debate":
         if "Red" in speaker:
             cls = "debate-red"
             icon = "🔴"
-            title_color = "#991b1b"
+            title_color = "#f87171"
         elif "Blue" in speaker:
             cls = "debate-blue"
             icon = "🔵"
-            title_color = "#0369a1"
+            title_color = "#38bdf8"
         else:
             cls = "debate-judge"
             icon = "⚖️"
-            title_color = "#15803d"
+            title_color = "#34d399"
 
         st.markdown(f"""
         <div class="debate-card {cls}">
             <h4 style="margin-top: 0; color: {title_color}; font-size: 15px;">{icon} {speaker} — ({turn['agent_name']})</h4>
-            <p style="font-size: 14px; line-height: 1.6; color: #334155;">{arg}</p>
-            <div style="font-size: 12px; margin-top: 8px; color: #64748b;">
-                <b>Core Arguments:</b>
+            <p style="font-size: 14px; line-height: 1.6; color: #e2e8f0;">{arg}</p>
+            <div style="font-size: 12px; margin-top: 8px; color: #94a3b8;">
+                <b style="color: #ffffff;">Core Arguments:</b>
                 <ul style="margin-top: 4px;">
-                    {''.join([f'<li>{p}</li>' for p in points])}
+                    {''.join([f'<li style=\"color: #cbd5e1;\">{p}</li>' for p in points])}
                 </ul>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown(f"""
-    <div style="background: #f8fafc; border: 2px solid #818cf8; border-radius: 12px; padding: 20px; margin-top: 16px;">
-        <h3 style="margin-top: 0; color: #1e1b4b; font-size: 17px;">🏛️ Formal Binding Verdict: {audit['verdict']}</h3>
-        <p style="font-size: 14px; color: #334155; line-height: 1.6; margin-bottom: 0;">
+    <div style="background: #161b22; border: 2px solid #818cf8; border-radius: 12px; padding: 20px; margin-top: 16px;">
+        <h3 style="margin-top: 0; color: #ffffff; font-size: 17px;">🏛️ Formal Binding Verdict: {audit['verdict']}</h3>
+        <p style="font-size: 14px; color: #e2e8f0; line-height: 1.6; margin-bottom: 0;">
             <b>Rationale:</b> {debate['verdict_rationale']}
         </p>
     </div>
@@ -2342,14 +2360,14 @@ elif page_nav == "🚨 Risk & Financial Impact":
     st.markdown("---")
     st.markdown(f"""
     <div class="glass-card">
-        <h4 style="color: #0f172a; margin-top: 0; font-size: 16px;">💼 Business Impact Narrative</h4>
-        <p style="font-size: 14px; color: #334155; line-height: 1.6;">
+        <h4 style="color: #ffffff; margin-top: 0; font-size: 16px;">💼 Business Impact Narrative</h4>
+        <p style="font-size: 14px; color: #e2e8f0; line-height: 1.6;">
             {b_impact.get('impact_narrative')}
         </p>
         <div style="margin-top: 14px;">
-            <b>Primary Impact Areas:</b>
+            <b style="color: #ffffff;">Primary Impact Areas:</b>
             <ul style="margin-top: 6px;">
-                {''.join([f'<li style="color: #475569; margin-bottom: 4px;">{area}</li>' for area in b_impact.get('primary_impact_areas', [])])}
+                {''.join([f'<li style="color: #cbd5e1; margin-bottom: 4px;">{area}</li>' for area in b_impact.get('primary_impact_areas', [])])}
             </ul>
         </div>
     </div>
@@ -2388,7 +2406,7 @@ elif page_nav == "📈 30/60/90-Day Forecast":
         xaxis_title="Timeline (Days from Audit)",
         yaxis_title="Compliance Index (0 - 100%)",
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(15, 23, 42, 0.6)",
+        plot_bgcolor="#161b22",
         font=dict(color="#f8fafc", family="Plus Jakarta Sans"),
         yaxis=dict(range=[0, 105], gridcolor="rgba(255, 255, 255, 0.1)"),
         xaxis=dict(gridcolor="rgba(255, 255, 255, 0.1)"),
@@ -2404,13 +2422,13 @@ elif page_nav == "📈 30/60/90-Day Forecast":
         with col_m:
             st.markdown(f"""
             <div class="glass-card">
-                <h4 style="color: #0f172a; margin-top: 0; font-size: 15px;">📅 Day {m['days']} Milestone</h4>
+                <h4 style="color: #ffffff; margin-top: 0; font-size: 15px;">📅 Day {m['days']} Milestone</h4>
                 <div style="font-size: 30px; font-weight: 800; color: #10b981; margin: 4px 0;">{m['predicted_score']}%</div>
-                <div style="font-size: 11px; color: #64748b; margin-bottom: 8px;">Confidence: <b>{m['confidence_percentage']}%</b></div>
-                <div style="font-size: 12px; color: #475569;">
-                    <b>Projected Improvements:</b>
+                <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">Confidence: <b>{m['confidence_percentage']}%</b></div>
+                <div style="font-size: 12px; color: #cbd5e1;">
+                    <b style="color: #ffffff;">Projected Improvements:</b>
                     <ul style="margin-top: 4px;">
-                        {''.join([f'<li>{imp}</li>' for imp in m['projected_improvements']])}
+                        {''.join([f'<li style=\"color: #cbd5e1;\">{imp}</li>' for imp in m['projected_improvements']])}
                     </ul>
                 </div>
             </div>
@@ -2455,20 +2473,20 @@ elif page_nav == "🗺️ Remediation Roadmap":
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
                 <div>
                     <span class="{p_badge}">{item['priority']}</span> &nbsp;
-                    <b style="font-size: 14px; color: #0f172a;">{item['title']}</b>
-                    <span style="font-size: 11px; color: #64748b; margin-left: 8px;">(Ref: <code>{item['finding_ref']}</code>)</span>
+                    <b style="font-size: 14px; color: #ffffff;">{item['title']}</b>
+                    <span style="font-size: 11px; color: #94a3b8; margin-left: 8px;">(Ref: <code>{item['finding_ref']}</code>)</span>
                 </div>
                 <div style="font-size: 13px; color: #10b981; font-weight: 800;">
                     +{item['expected_point_gain']} Points
                 </div>
             </div>
-            <p style="margin: 10px 0; font-size: 13px; color: #475569;">
-                <b>Action:</b> {item['action']}
+            <p style="margin: 10px 0; font-size: 13px; color: #e2e8f0;">
+                <b style="color: #ffffff;">Action:</b> {item['action']}
             </p>
-            <div style="font-size: 11px; color: #64748b; display: flex; gap: 20px; flex-wrap: wrap;">
-                <span>👥 <b>Responsible:</b> {item['responsible_team']}</span>
-                <span>⏱️ <b>Timeline:</b> {item['target_days']} Days</span>
-                <span>💵 <b>Cost Level:</b> {item['estimated_cost_level']}</span>
+            <div style="font-size: 11px; color: #94a3b8; display: flex; gap: 20px; flex-wrap: wrap;">
+                <span>👥 <b>Responsible:</b> <span style="color: #cbd5e1;">{item['responsible_team']}</span></span>
+                <span>⏱️ <b>Timeline:</b> <span style="color: #cbd5e1;">{item['target_days']} Days</span></span>
+                <span>💵 <b>Cost Level:</b> <span style="color: #cbd5e1;">{item['estimated_cost_level']}</span></span>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -2483,9 +2501,9 @@ elif page_nav == "🧠 Historical Audit Memory":
 
     mem = audit.get("memory_comparison", {})
     st.markdown(f"""
-    <div class="glass-card" style="border-left: 4px solid #0284c7;">
-        <h4 style="color: #0369a1; margin-top: 0; font-size: 16px;">Historical Audit Comparison</h4>
-        <p style="font-size: 14px; color: #334155; margin-bottom: 0;">{mem.get('summary_of_progress')}</p>
+    <div class="glass-card" style="border-left: 4px solid #38bdf8;">
+        <h4 style="color: #38bdf8; margin-top: 0; font-size: 16px;">Historical Audit Comparison</h4>
+        <p style="font-size: 14px; color: #e2e8f0; margin-bottom: 0;">{mem.get('summary_of_progress')}</p>
     </div>
     """, unsafe_allow_html=True)
 
